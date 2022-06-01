@@ -16,7 +16,7 @@ export const stockApi= createApi({
     baseQuery: fetchBaseQuery({baseUrl}),
     endpoints: (builder)=>({
         getMovers: builder.query({
-            query: () => createRequest(`/market/v2/get-movers`)
+            query: ({country,count}) => createRequest(`/market/v2/get-movers?region=${country}&count=${count}`)
         }),
       
     })
