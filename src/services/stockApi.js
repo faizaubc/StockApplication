@@ -18,10 +18,12 @@ export const stockApi= createApi({
         getMovers: builder.query({
             query: (country) => createRequest(`/market/get-trending-tickers?region=${country}`)
         }),
-      
+        getStockDetails: builder.query({
+            query: (stock) => createRequest(`/stock/v2/get-summary?symbol=${stock}&region=CA`),
+        }),
     })
 });
 
 export const{
-    useGetMoversQuery
+    useGetMoversQuery, useGetStockDetailsQuery
 } = stockApi

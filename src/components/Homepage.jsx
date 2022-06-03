@@ -3,7 +3,6 @@ import millify from "millify";
 import {Typography, Row, Col , Statistic, Select, Space, Card} from 'antd';
 import {Link} from 'react-router-dom';
 import { useGetMoversQuery } from '../services/stockApi';
-
 const {Title,Text} = Typography;
 const {Option}= Select;
 
