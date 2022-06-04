@@ -21,7 +21,7 @@ const Stock = () => {
   console.log(stock);
   const {data, isFetching}= useGetStockDetailsQuery(stock);
  
-  const StockArray = ['VET.TO', 'CVE.TO'];
+  const StockArray = ['VET.TO', 'CVE.TO', 'OBE.TO','BTE.TO', 'MEG.TO', 'ARX.TO', 'ENB.TO'];
 
   const symbol = data?.symbol;
   const calenderEvents= data?.calendarEvents;
