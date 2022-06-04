@@ -1,11 +1,20 @@
 import React , {useState}from 'react';
 import millify from "millify";
-import {Typography, Row, Col , Statistic, Select, Space, Card} from 'antd';
+import {Typography, Row, Col , Statistic, Select, Space, Card,Carousel, Collapse } from 'antd';
 import {Link} from 'react-router-dom';
 import {useGetStockDetailsQuery } from '../services/stockApi';
 const {Title,Text} = Typography;
 const {Option}= Select;
+const { Panel } = Collapse;
 
+const contentStyle = {
+  height: '160px',
+  color: '#fff',
+  lineHeight: '160px',
+  textAlign: 'center',
+  background: '#364d79',
+  width: '50px'
+};
 
 const Stock = () => {
   const [stock, setStock]= useState('VET.TO');
@@ -17,18 +26,29 @@ const Stock = () => {
   const symbol = data?.symbol;
   const calenderEvents= data?.calendarEvents;
   const defaultStatistics= data?.defaultKeyStatistics;
+  const financialData= data?.financialData;
+  const price = data?.price;
+  const earnings = data?.earnings?.financialsChart?.yearly;
+  const quarterly = data?.earnings?.financialsChart?.quarterly;
+  const summaryDetail = data?.summaryDetail;  
+  const summaryProfile = data?.summaryProfile;
+
+
+
   console.log(data);
  
- 
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+  };
 
   if( isFetching) return 'Loading..';
   return (
     <>
-        <Title level={3} className="heading">Choose To See Stock Details</Title>
+        <Title level={3} className="heading">Stock Details</Title>
   <Row>
   <Col span={30}>
-    <Title  level={4}>Please Choose the Country:</Title>
-    <Select defaultValue="VET.TO"
+    <Title  level={4}>Select Stock:</Title>
+    <Select 
         placeholder="Select A Stock"
         onChange={(value)=> setStock(value)} 
         >
@@ -36,20 +56,67 @@ const Stock = () => {
         </Select>      
    </Col>
   </Row>
-
-  <Title level={4} className="heading">{symbol} Stock Data</Title>
-  <Title level={4} className="heading">Calender Events</Title>
+<br></br>
+<h2>{data?.quoteType?.longName}  {symbol}</h2>
+<h3>{summaryProfile?.industry}</h3>
     <Row>
+      
+      <Col><p>{summaryProfile?.longBusinessSummary}</p></Col>
+
       <Col span = {12}><Statistic title="Dividend Date" value = {calenderEvents?.dividendDate?.fmt}/></Col>
       <Col span = {12}><Statistic title="Earnings Date -01" value = {calenderEvents?.earnings?.earningsDate[0]?.fmt}/></Col>
       <Col span = {12}><Statistic title="Earnings Date -02" value = {calenderEvents?.earnings?.earningsDate[1]?.fmt}/></Col>
       <Col span = {12}><Statistic title="Revenue High"value = {millify(calenderEvents?.earnings?.revenueHigh?.raw)}/></Col>
       <Col span = {12}><Statistic title="Revenue Low" value = {millify(calenderEvents?.earnings?.revenueLow?.raw)}/></Col>
       <Col span = {12}><Statistic title="Last Dividend Value" value = {defaultStatistics?.lastDividendValue?.raw}/></Col>
+      <Col span = {12}><Statistic title="Current Price" value = {financialData?.currentPrice?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Target High Price" value = {financialData?.targetHighPrice?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Average Daily Volume 3Month" value = {price?.averageDailyVolume3Month?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Average Daily Volume 10Day" value = {price?.averageDailyVolume10Day?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Day High" value = {summaryDetail?.dayHigh?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Day Low" value = {summaryDetail?.dayLow?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Fifty Day Average" value = {summaryDetail?.fiftyDayAverage?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Fifty Two Week High" value = {summaryDetail?.fiftyTwoWeekHigh?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Fifty Two Week Low" value = {summaryDetail?.fiftyTwoWeekLow?.fmt}/></Col>
+      <Col span = {12}><Statistic title="Market Cap" value = {summaryDetail?.marketCap?.fmt}/></Col>
+      <Col span = {12}><Statistic title="PreviousClose" value = {summaryDetail?.previousClose?.fmt}/></Col>
+
+      <br></br>
+      <Row>
+    <Collapse defaultActiveKey={['0']} onChange={onChange}>
+    {earnings.map((record, i)=>(
+    <Panel  header={record?.date} key={i}>
+    <p>
+    Earnings: {record?.earnings?.fmt} ,   
+    Revenue: {record?.revenue?.fmt}
+    </p>
+    </Panel>
+    ))
+   
+}
+</Collapse> 
+
+<Collapse defaultActiveKey={['0']} onChange={onChange}>
+    {quarterly.map((record, i)=>(
+    <Panel  header={record?.date} key={i}>
+    <p>
+    Earnings: {record?.earnings?.fmt} ,   
+    Revenue: {record?.revenue?.fmt}
+    </p>
+    </Panel>
+    ))
+   
+}
+</Collapse> 
+
+
+
 
     </Row>
 
-    
+    </Row>
+<br></br>
+   
     </>
   )
 }

@@ -301,6 +301,13 @@ a:hover{
 width: 70%;
 }
 
+.contentStyle{
+  height: '50px';
+  color: '#fff';
+  background: '#364d79';
+  
+}
+
 .news-image-container .img{
     width:100px;
     height:100px;
