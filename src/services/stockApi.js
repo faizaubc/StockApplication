@@ -21,16 +21,16 @@ export const stockApi= createApi({
         getStockDetails: builder.query({
             query: (stock) => createRequest(`/stock/v2/get-summary?symbol=${stock}&region=CA`),
         }),
-        getNewsDetails: builder.mutation({
+        getNewsDetails: builder.query({
             query: (symbol) => ({
-                url: `/news/v2/list`,
-                method: "POST"
-            }),
+                url:`/news/v2/list`,
+                method: 'POST'
+            })
         }),
     
     })
 });
 
 export const{
-    useGetMoversQuery, useGetStockDetailsQuery, useGetNewsDetailsQuery, useGetNewsDetailsMutation
-} = stockApi
+    useGetMoversQuery, useGetStockDetailsQuery, useGetNewsDetailsQuery
+}= stockApi
