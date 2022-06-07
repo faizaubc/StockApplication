@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route, Link} from 'react-router-dom';
 import {Layout, Typography, Space} from 'antd';
-import {Navbar, Exchanges, Homepage, Stock, News, StockDetails} from './components';
+import {Navbar, Exchanges, Homepage, Stock, News, StockDetails, StockChart} from './components';
 import './App.css';
 const App = () => {
   return (
@@ -27,6 +27,9 @@ const App = () => {
                 </Route>
                 <Route exact path ="/news">
                   <News/>
+                </Route>
+                <Route exact path ="/stockchart">
+                  <StockChart/>
                 </Route>
               </Switch>
 

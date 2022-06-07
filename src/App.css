@@ -6,7 +6,11 @@
    --light-blue: #e6f7ff;
    --border: #d9d9d9;
 }
-
+#chart {
+    max-width: 650px;
+    margin: 35px auto;
+  }
+  
 * {
     margin: 0;
     padding: 0;
