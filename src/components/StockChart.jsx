@@ -14,7 +14,9 @@ function StockChart() {
     const [options, setOptions] = useState([]);
     const stockOptionsData= data?.bestMatches;
     const [flag, setFlag]= useState(false);
-
+    //const myObj = JSON.parse(data);
+    if(!isNaN(data))
+       console.log(data['bestMatches']);
 
     function UserGreeting(props) {
         if(!flag)
