@@ -14,17 +14,31 @@ function StockChart() {
     const [options, setOptions] = useState([]);
     const stockOptionsData= data?.bestMatches;
     const [flag, setFlag]= useState(false);
-    //const myObj = JSON.parse(data);
-    if(!isNaN(data))
-       console.log(data['bestMatches']);
+    const [intervalSelection, setIntervalSelection]= useState("Daily");
 
-    function UserGreeting(props) {
+    //This is the data for searching time interval
+    const optionsTimeInterval = [
+        {
+          value: 'Daily',
+        },
+        {
+          value: 'Weekly',
+        },
+        {
+          value: 'Monthly',
+        },
+      ];
+
+
+    function DrawChart(props) {
         if(!flag)
             return <h1>Welcome back!</h1>;
-        return <LineChart symbolName={symbolChangesOnSelect}/>;
+        return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection}/>;
      }
+
+     //Search Result for the drop down of the Stock Search Query
     const searchResult = (query) =>
-    stockOptionsData.map((record, idx) => {
+    stockOptionsData?.map((record, idx) => {
       
       const category= `${record["1. symbol"]}  ${record["2. name"] }`;
       const valueData = `${record["1. symbol"]}`;
@@ -48,41 +62,67 @@ function StockChart() {
             ),
           };
         });
-      
+
+    //Handle search for the stock drop down query
   const handleSearch = (value) => {
     setSymbol(value);
-    console.log('Inside handle search')
+    console.log('Inside handle search');
     setOptions(value ? searchResult(value) : []);
   };
+  //When the Stock is being chosen this function will run setting the flag 
+  //parameter to true
+  //It renders again if the parameter is true it will output a new graph
   const onSelect = (value) => {
     console.log(value);
     setsymbolChangesOnSelect(value);
     setFlag(true);
     
   };
+
+  //This runs on if the interval is selected 
+  const onSelectForStockInterval = (value) => {
+    console.log('Stock Interval Is Selected', value);
+    setIntervalSelection(value);
+
+  };
+  //makes sure data for the api is here
+  if( isStockList) return 'Loading..';
   return (
     <>
 <h2>{symbol} Stock Graph</h2>
 
 <h3>Input the stocks here:</h3>
     <AutoComplete
-    dropdownMatchSelectWidth={252}
-    style={{
-      width: 300,
-    }}
-    options={options}
-    onSelect={onSelect}
-    onSearch={handleSearch}
-  >
-    <Input.Search size="large" placeholder="input here" enterButton />
+        dropdownMatchSelectWidth={252}
+        style={{
+        width: 300,
+        }}
+        options={options}
+        onSelect={onSelect}
+        onSearch={handleSearch}
+
+    >
+    <Input.Search size="large" placeholder="Start Typing Stock..." enterButton />
   </AutoComplete>
 
   <br></br>
   <br></br>
+  
+  <AutoComplete
+        style={{
+        width: 200,
+        }}
+        options={optionsTimeInterval}
+        onSelect={onSelectForStockInterval}
+        placeholder="Chart Interval Here"
+        defaultValue="Daily"
+       
+  />
+  <br></br>
   <br></br>
 
 
-    {UserGreeting()}
+    {DrawChart()}
   
 
     </>
