@@ -27,10 +27,14 @@ export const stockApi= createApi({
                 method: 'POST'
             })
         }),
+        getStockLiveData: builder.query({
+            query: ({liveInterval, symbol, range}) => createRequest(`/stock/v2/get-chart?interval=${liveInterval}&symbol=${symbol}&range=${range}&region=CA`),
+
+        }),
     
     })
 });
 
 export const{
-    useGetMoversQuery, useGetStockDetailsQuery, useGetNewsDetailsQuery
+    useGetMoversQuery, useGetStockDetailsQuery, useGetNewsDetailsQuery, useGetStockLiveDataQuery
 }= stockApi

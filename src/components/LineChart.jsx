@@ -8,11 +8,11 @@ import Chart from "react-apexcharts";
 import DailyChart from './DailyChart';
 import MonthlyChart from './MontlyChart';
 import WeeklyChart from './WeeklyChart';
+import StockDetails from './StockDetails';
 
 
 
-
-const LineChart = ({symbolName, interval}) => {
+const LineChart = ({symbolName, interval ,liveinterval,range}) => {
   
     function Initialize(){
         if(interval=="Daily")
@@ -23,6 +23,9 @@ const LineChart = ({symbolName, interval}) => {
 
         if(interval=="Monthly")
         return <MonthlyChart symbolName={symbolName} interval={interval}/>
+
+        if(interval=="Live")
+        return <StockDetails symbolName={symbolName} interval={interval} liveInterval={liveinterval} range={range}/>
     }
   return (
       <>

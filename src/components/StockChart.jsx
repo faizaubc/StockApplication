@@ -15,6 +15,9 @@ function StockChart() {
     const stockOptionsData= data?.bestMatches;
     const [flag, setFlag]= useState(false);
     const [intervalSelection, setIntervalSelection]= useState("Daily");
+    const [intervalLiveSelection, setIntervalLiveSelection]= useState("5m");
+    const [rangeLiveSelection, setRangeLiveSelection]= useState("5m");
+
 
     //This is the data for searching time interval
     const optionsTimeInterval = [
@@ -27,13 +30,67 @@ function StockChart() {
         {
           value: 'Monthly',
         },
+        {
+          value: 'Live',
+        },
       ];
+
+       //This is the data for selecting live time interval for stocks
+     const optionsLiveInterval = [
+        {
+          value: '1m',
+        },
+        {
+          value: '2m',
+        },
+        {
+          value: '5m',
+        },
+        {
+          value: '15m',
+        },
+        {
+          value: '60m',
+        },
+        {
+          value: '1d',
+        },
+      ];
+
+    //This is the data for selecting live time RANGE for stocks
+     const optionsLiveRange = [
+      {
+        value: '1d',
+      },
+      {
+        value: '5d',
+      },
+      {
+        value: '1mo',
+      },
+      {
+        value: '6mo',
+      },
+      {
+        value: '1y',
+      },
+      {
+        value: '2y',
+      },
+      {
+        value: '5y',
+      },
+      {
+        value: '10y',
+      },
+    ];
+      
 
 
     function DrawChart(props) {
         if(!flag)
             return <h1>Welcome back!</h1>;
-        return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection}/>;
+        return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection} liveinterval={intervalLiveSelection} range={rangeLiveSelection}/>;
      }
 
      //Search Result for the drop down of the Stock Search Query
@@ -85,6 +142,21 @@ function StockChart() {
     setIntervalSelection(value);
 
   };
+
+    //This runs on if the interval is selected for the live data
+    const onSelectForStockLiveInterval = (value) => {
+      console.log('Stock LIVE Interval Is Selected', value);
+      setIntervalLiveSelection(value);
+  
+    };
+
+     //This runs on if the range is selected for the live data
+    const onSelectForStockLiveRange = (value) => {
+      console.log('Stock LIVE RANGE Is Selected', value);
+      setRangeLiveSelection(value);
+  
+    };
+  
   //makes sure data for the api is here
   if( isStockList) return 'Loading..';
   return (
@@ -120,6 +192,31 @@ function StockChart() {
   />
   <br></br>
   <br></br>
+
+  <AutoComplete
+        style={{
+        width: 200,
+        }}
+        options={optionsLiveInterval}
+        onSelect={onSelectForStockLiveInterval}
+        placeholder="Chart Live Interval Here"
+        defaultValue="5m"
+       
+  />
+
+<br></br>
+<br></br>
+
+  <AutoComplete
+        style={{
+        width: 200,
+        }}
+        options={optionsLiveRange}
+        onSelect={onSelectForStockLiveRange}
+        placeholder="Chart Live Range Here"
+        defaultValue="1d"
+       
+  />
 
 
     {DrawChart()}
