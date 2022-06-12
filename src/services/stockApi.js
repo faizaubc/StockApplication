@@ -32,6 +32,7 @@ export const stockApi= createApi({
 
         }),
     
+    
     })
 });
 

@@ -3,6 +3,7 @@ import millify from "millify";
 import {Typography, Row, Col , Statistic, Select, Space, Card} from 'antd';
 import {Link} from 'react-router-dom';
 import { useGetMoversQuery } from '../services/stockApi';
+import {useGetStockNewsQuery} from '../services/newsfinance';
 const {Title,Text} = Typography;
 const {Option}= Select;
 
@@ -10,24 +11,26 @@ const {Option}= Select;
 
 const Homepage = () => {
   const [country, setCountry]= useState('CA');
-  //const [count, setCount]= useState('5');
   let flag = true;
-  console.log(country);
- // console.log(count);
-
+ 
+  const{data: stockNews}= useGetStockNewsQuery();
   const {data, isFetching}=  useGetMoversQuery(country);
+  const topActives = stockNews?.Top10?.Actives?.Securities;
+  const topGainers = stockNews?.Top10?.Gainers?.Securities;
+  const topLosers = stockNews?.Top10?.Losers?.Securities;
+  console.log("News Data Array:",stockNews);
+  console.log(topActives);
+  console.log(topGainers);
+  console.log(topLosers);
+
 
 
   const globalStats= data?.finance?.result[0].quotes;
   const Country = ['CA', 'US'];
-  //const Count = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'
-  //, '18', '19', '20', '21', '22', '23', '24','25'];
 
 
-  console.log(data);
-  console.log(data?.finance);
-  console.log(data?.finance?.result[0]?.quotes);
-  console.log(globalStats);
+
+ 
 
   if( isFetching) return 'Loading..';
   return (
@@ -68,8 +71,87 @@ const Homepage = () => {
          </Card>
          </Col>
      ))
-     }    
-</Row>
+     }
+  </Row>
+<br></br>
+<br></br>
+<Title level={4}>Active Stocks in US Market:</Title>
+
+<Row gutter= {[24,24]}>
+    {topActives?.map((record, i)=>(
+        <Col xs ={24} sm={12} lg={8} key={i}>
+        <Card lassName="news-card">
+          <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
+          <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
+
+          <div className="provider-container">
+            <Text>Sector: {record?.Security?.Sector}&nbsp;&nbsp;</Text>      
+        
+          </div>    
+          <p>
+          <Text>Day High: {millify(record?.Quote?.DayHigh)}&nbsp;&nbsp;</Text>         
+          </p>
+          <p>
+          <Text>Day Low: {record?.Quote?.DayLow}</Text> 
+          </p>
+         </Card>
+         </Col>
+     ))
+     }
+  </Row>
+<br></br>
+<br></br>
+<Title level={4}>Gainers in the US Market:</Title>
+<Row gutter= {[24,24]}>
+    {topGainers?.map((record, i)=>(
+        <Col xs ={24} sm={12} lg={8} key={i}>
+        <Card lassName="news-card">
+          <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
+          <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
+
+          <div className="provider-container">
+            <Text>Sector: {record?.Security?.Sector}&nbsp;&nbsp;</Text>      
+        
+          </div>    
+          <p>
+          <Text>Day High: {millify(record?.Quote?.DayHigh)}&nbsp;&nbsp;</Text>         
+          </p>
+          <p>
+          <Text>Day Low: {record?.Quote?.DayLow}</Text> 
+          </p>
+         </Card>
+         </Col>
+     ))
+     }
+  </Row>
+<br></br>
+<br></br>
+<Title level={4}>Loosers in US Market:</Title>
+<Row gutter= {[24,24]}>
+    {topLosers?.map((record, i)=>(
+        <Col xs ={24} sm={12} lg={8} key={i}>
+        <Card lassName="news-card">
+          <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
+          <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
+
+          <div className="provider-container">
+            <Text>Sector: {record?.Security?.Sector}&nbsp;&nbsp;</Text>      
+        
+          </div>    
+          <p>
+          <Text>Day High: {millify(record?.Quote?.DayHigh)}&nbsp;&nbsp;</Text>         
+          </p>
+          <p>
+          <Text>Day Low: {record?.Quote?.DayLow}</Text> 
+          </p>
+         </Card>
+         </Col>
+     ))
+     }
+  </Row>
+<br></br>
+<br></br>
+    
   
     </>
   )
