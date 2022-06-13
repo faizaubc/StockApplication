@@ -16,7 +16,7 @@ export const newsfinance= createApi({
     baseQuery: fetchBaseQuery({baseUrl}),
     endpoints: (builder)=>({
         getStockNews: builder.query({
-            query: () => createRequest(`/market/get-movers?PerformanceId=0P00008IVE`),
+            query: (perfID) => createRequest(`/market/get-movers?PerformanceId=${perfID}`),
         }),
     }),
 });
