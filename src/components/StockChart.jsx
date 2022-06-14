@@ -17,7 +17,7 @@ function StockChart() {
     const [intervalSelection, setIntervalSelection]= useState("Daily");
     const [intervalLiveSelection, setIntervalLiveSelection]= useState("5m");
     const [rangeLiveSelection, setRangeLiveSelection]= useState("5m");
-
+    console.log(flag);
 
     //This is the data for searching time interval
     const optionsTimeInterval = [
@@ -120,7 +120,7 @@ function StockChart() {
           };
         });
 
-    //Handle search for the stock drop down query
+  //Handle search for the stock drop down query
   const handleSearch = (value) => {
     setSymbol(value);
     console.log('Inside handle search');

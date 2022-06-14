@@ -16,12 +16,12 @@ const contentStyle = {
   width: '50px'
 };
 
-const Stock = () => {
+const Stock = ({symbolName}) => {
   const [stock, setStock]= useState('VET.TO');
   console.log(stock);
-  const {data, isFetching}= useGetStockDetailsQuery(stock);
+  const {data, isFetching}= useGetStockDetailsQuery(symbolName);
  
-  const StockArray = ['VET.TO', 'CVE.TO', 'OBE.TO','BTE.TO', 'MEG.TO', 'ARX.TO', 'ENB.TO'];
+  //const StockArray = ['VET.TO', 'CVE.TO', 'OBE.TO','BTE.TO', 'MEG.TO', 'ARX.TO', 'ENB.TO'];
 
   const symbol = data?.symbol;
   const calenderEvents= data?.calendarEvents;
@@ -44,19 +44,9 @@ const Stock = () => {
   if( isFetching) return 'Loading..';
   return (
     <>
-        <Title level={3} className="heading">Stock Details</Title>
-  <Row>
-  <Col span={30}>
-    <Title  level={4}>Select Stock:</Title>
-    <Select 
-        placeholder="Select A Stock"
-        onChange={(value)=> setStock(value)} 
-        >
-          {StockArray.map((con)=> <Option key={con}>{con}</Option>)}
-        </Select>      
-   </Col>
-  </Row>
-<br></br>
+       
+ <br></br>
+ <br></br>
 <h2>{data?.quoteType?.longName}  {symbol}</h2>
 <h3>{summaryProfile?.industry}</h3>
     <Row>
@@ -82,37 +72,41 @@ const Stock = () => {
       <Col span = {12}><Statistic title="PreviousClose" value = {summaryDetail?.previousClose?.fmt}/></Col>
 
       <br></br>
+      <br></br>
+      </Row>
       <Row>
+      <br></br>
+      <br></br>
+      <Collapse defaultActiveKey={['0']} onChange={onChange}>
+              {earnings.map((record, i)=>(
+              <Panel  header={record?.date} key={i}>
+              <p>
+              Earnings: {record?.earnings?.fmt} ,   
+              Revenue: {record?.revenue?.fmt}
+              </p>
+              </Panel>
+              ))
+            
+              }
+      </Collapse> 
+
     <Collapse defaultActiveKey={['0']} onChange={onChange}>
-    {earnings.map((record, i)=>(
-    <Panel  header={record?.date} key={i}>
-    <p>
-    Earnings: {record?.earnings?.fmt} ,   
-    Revenue: {record?.revenue?.fmt}
-    </p>
-    </Panel>
-    ))
+              {quarterly.map((record, i)=>(
+              <Panel  header={record?.date} key={i}>
+              <p>
+              Earnings: {record?.earnings?.fmt} ,   
+              Revenue: {record?.revenue?.fmt}
+              </p>
+              </Panel>
+              ))
    
-}
-</Collapse> 
-
-<Collapse defaultActiveKey={['0']} onChange={onChange}>
-    {quarterly.map((record, i)=>(
-    <Panel  header={record?.date} key={i}>
-    <p>
-    Earnings: {record?.earnings?.fmt} ,   
-    Revenue: {record?.revenue?.fmt}
-    </p>
-    </Panel>
-    ))
-   
-}
-</Collapse> 
+      }
+    </Collapse> 
 
 
 
 
-    </Row>
+    
 
     </Row>
 <br></br>

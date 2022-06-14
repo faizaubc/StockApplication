@@ -3,6 +3,8 @@ import {Switch, Route, Link} from 'react-router-dom';
 import {Layout, Typography, Space} from 'antd';
 import {Navbar, Exchanges, Homepage, Stock, News, StockDetails, StockChart} from './components';
 import './App.css';
+import StockSearch from './components/StockSearch';
+
 const App = () => {
   return (
     <div className="app">
@@ -17,7 +19,7 @@ const App = () => {
                   <Homepage/>
                 </Route>  
                 <Route exact path="/stock">
-                  <Stock/>
+                  <StockSearch/>
                 </Route>
                 <Route exact path="/exchanges">
                   <Exchanges/>

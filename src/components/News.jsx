@@ -41,49 +41,18 @@ const News = () => {
     },
   ];
 
-  const searchResult = (query) =>
-  
-  stockOptionsData.map((record, idx) => {
-    
-    const category= `${record["1. symbol"]}  ${record["2. name"] }`;
-    const index = `${idx}`;
-      if(!isNaN(record["1. symbol"]) && !isNaN(record["2. name"] )){ category=`${record["1. symbol"]}${record["2. name"] }`};
-        return {
-          value: idx,
-          label: (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span>
-                
-                  {category}
-                
-              </span>
-            </div>
-          ),
-        };
-      });
-  
+ 
 
-  const [options, setOptions] = useState([]);
 
-  const handleSearch = (value) => {
-    setSymbol(value);
-    console.log('Inside handle search')
-    setOptions(value ? searchResult(value) : []);
-  };
+
+
 
   const handleSearchNews = (value) => {
     setSearchVal(value);
     console.log('Inside handle search')
   };
 
-  const onSelect = (value) => {
-    console.log('onSelect', value);
-  };
+ 
  
   const onSelectNews = (value) => {
     console.log('onSelect', value);
@@ -97,20 +66,10 @@ const News = () => {
   //if( isFetching) return 'Loading..';
   return (
     <>
-    <h3>Input the stocks here:</h3>
-    <AutoComplete
-    dropdownMatchSelectWidth={252}
-    style={{
-      width: 300,
-    }}
-    options={options}
-    onSelect={onSelect}
-    onSearch={handleSearch}
-  >
-    <Input.Search size="large" placeholder="input here" enterButton />
-  </AutoComplete>
-<br></br>
+    
+<h2>Stocks News </h2>
 <h3>Input the News Here:</h3>
+
   <AutoComplete
     style={{
       width: 200,
@@ -123,7 +82,7 @@ const News = () => {
       option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
     }
   />
-
+  <br></br>
   <br></br>
   <Row gutter= {[24,24]}>
 {
