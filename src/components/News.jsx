@@ -2,8 +2,6 @@ import React , {useState}from 'react';
 import millify from "millify";
 import {Typography, Row, Col , Statistic, Select, Space, Card,Carousel, Collapse ,AutoComplete, Input, Avatar} from 'antd';
 import {Link} from 'react-router-dom';
-import {useGetNewsDetailsQuery} from '../services/stockApi';
-import { useGetStockListQuery } from '../services/stock';
 import { useGetStockNewsQuery } from '../services/news';
 import moment from 'moment';
 
@@ -15,13 +13,11 @@ const News = () => {
   const [symbol, setSymbol]= useState('VET');
   const [searchVal, setSearchVal]= useState('Oil And Gas');
  const count = 12;
-  const {data,isStockList}= useGetStockListQuery(symbol);
   const{data: stockNews}= useGetStockNewsQuery({ searchVal, count:  20});
 
 
   const demoImage = 'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=News';
 
- const stockOptionsData= data?.bestMatches;
 
  console.log(stockNews);
  console.log(searchVal);
@@ -61,7 +57,7 @@ const News = () => {
 
 
   };
-  if( isStockList || !stockNews?.value) return 'Loading..';
+  if(  !stockNews?.value) return 'Loading..';
   
   //if( isFetching) return 'Loading..';
   return (
@@ -78,9 +74,7 @@ const News = () => {
     onSelect={onSelectNews}
     //onSearch={handleSearchNews}
     placeholder="Enter Search News Here"
-    filterOption={(inputValue, option) =>
-      option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-    }
+   
   />
   <br></br>
   <br></br>

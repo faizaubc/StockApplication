@@ -17,10 +17,14 @@ const StockSearch = () => {
     function DrawCards(props) {
       if(!flag)
           return <h1>Welcome back!</h1>;
-
-      var splitSymbolOnDot= symbolChangesOnSelect.split(".")[0] + ".TO";
-      console.log("I Split It");
-      return <Stock symbolName={splitSymbolOnDot} />;
+      let symb="";
+      var splitSymbolOnDot= symbolChangesOnSelect.split(".");
+      if(splitSymbolOnDot[1]=="TRT")
+        symb= splitSymbolOnDot[0] +"." +"TO";
+      else
+        symb= symbolChangesOnSelect;
+      console.log("I Split It", symb);
+      return <Stock symbolName={symb} />;
    }
      //Search Result for the drop down of the Stock Search Query
      const searchResult = (query) =>

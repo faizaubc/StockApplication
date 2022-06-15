@@ -3,7 +3,14 @@ import { useGetStockLiveDataQuery } from '../services/stockApi';
 import Chart from "react-apexcharts";
 
 const StockDetails = ({symbolName, interval, liveInterval, range}) => {
-  const symbol = symbolName.split('.')[0] + ".TO";
+  //const symbol = symbolName.split('.')[0] + ".TO";
+  let symbol="";
+      var splitSymbolOnDot= symbolName.split(".");
+      if(splitSymbolOnDot[1]=="TRT")
+        symbol= splitSymbolOnDot[0] +"." +"TO";
+      else
+        symbol= symbolName;
+  console.log("My Symbol is" ,symbol);
   const {data,isStockList}=useGetStockLiveDataQuery ({liveInterval, symbol,range});
   const seriesData = [];
   const categoriesD=[];

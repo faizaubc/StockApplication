@@ -24,16 +24,28 @@ const Homepage = () => {
 
   const optionsSearch = [
     {
-      value: 'S&P/TSX Composite',
+      value: 'S&P/TSX Composite CA',
     },
     {
-      value: 'S&P/TSX 60',
+      value: 'S&P/TSX 60 CA',
     },
     {
-      value: 'S&P/TSX Small Cap',
+      value: 'S&P/TSX Small Cap CA',
     },
     {
-      value: 'S&P/TSX Venture',
+      value: 'S&P/TSX Venture CA',
+    },
+    {
+      value: 'DJ Industrial Average US',
+    },
+    {
+      value: 'Morningstar US Market',
+    },
+    {
+      value: 'S&P 500 US Market',
+    },
+    {
+      value: 'NASDAQ Composite US Market',
     },
   ];
 
@@ -45,14 +57,22 @@ const Homepage = () => {
     console.log('onSelect', value);
   
     let perfIndex='';
-    if(value=='S&P/TSX Composite')
+    if(value=='S&P/TSX Composite CA')
     perfIndex='0P00008IVF';
-    else if(value=='S&P/TSX 60')
+    else if(value=='S&P/TSX 60 CA')
     perfIndex='0P00008PAC';
-    else if (value=='S&P/TSX Small Cap')
+    else if (value=='S&P/TSX Small Cap CA')
     perfIndex='0P00008IVE';
-    else if (value =='S&P/TSX Venture')
+    else if (value =='S&P/TSX Venture CA')
     perfIndex='0P00001QO6'
+    else if (value =='DJ Industrial Average US')
+    perfIndex='0P00001FJG'
+    else if (value =='Morningstar US Market')
+    perfIndex='0P00001GJH'
+    else if (value =='S&P 500 US Market')
+    perfIndex='0P00001G7J'
+    else if (value =='NASDAQ Composite US Market')
+    perfIndex='0P00001G7B'
 
     setPerfID(perfIndex);
     
