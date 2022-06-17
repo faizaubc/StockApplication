@@ -4,6 +4,7 @@ import Stock from './Stock';
 import {Typography, Row, Col , Statistic, Select, Space, Card,Carousel, Collapse ,AutoComplete, Input, Avatar} from 'antd';
 const {Title,Text} = Typography;
 
+
 const StockSearch = () => {
     const [symbol, setSymbol]= useState('VET');
     const {data,isStockList}= useGetStockListQuery(symbol);
@@ -16,7 +17,7 @@ const StockSearch = () => {
     
     function DrawCards(props) {
       if(!flag)
-          return <h1>Welcome back!</h1>;
+          return <h1><br></br>Choose a Stock to see the Details!</h1>;
       let symb="";
       var splitSymbolOnDot= symbolChangesOnSelect.split(".");
       if(splitSymbolOnDot[1]=="TRT")

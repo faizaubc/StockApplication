@@ -17,7 +17,9 @@ function StockChart() {
     const [intervalSelection, setIntervalSelection]= useState("Daily");
     const [intervalLiveSelection, setIntervalLiveSelection]= useState("5m");
     const [rangeLiveSelection, setRangeLiveSelection]= useState("5m");
-    console.log(flag);
+
+
+    
 
     //This is the data for searching time interval
     const optionsTimeInterval = [
@@ -88,8 +90,11 @@ function StockChart() {
 
 
     function DrawChart(props) {
+
+      //onload hide the visibility of the autocompte:
+    //document.getElementById('interval').disabled=true;
         if(!flag)
-            return <h1>Welcome back!</h1>;
+            return <h1><br></br>Enter the Stock Data to See Charts !</h1>;
         return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection} liveinterval={intervalLiveSelection} range={rangeLiveSelection}/>;
      }
 
@@ -140,6 +145,7 @@ function StockChart() {
   const onSelectForStockInterval = (value) => {
     console.log('Stock Interval Is Selected', value);
     setIntervalSelection(value);
+   
 
   };
 
@@ -154,6 +160,12 @@ function StockChart() {
     const onSelectForStockLiveRange = (value) => {
       console.log('Stock LIVE RANGE Is Selected', value);
       setRangeLiveSelection(value);
+  
+    };
+
+    const IsDisabled = () => {
+      console.log('Stock LIVE RANGE Is Selected');
+      return false;
   
     };
   
@@ -201,6 +213,8 @@ function StockChart() {
         onSelect={onSelectForStockLiveInterval}
         placeholder="Chart Live Interval Here"
         defaultValue="5m"
+        id="interval"
+     
        
   />
 
@@ -215,6 +229,8 @@ function StockChart() {
         onSelect={onSelectForStockLiveRange}
         placeholder="Chart Live Range Here"
         defaultValue="1d"
+        id="range"
+        
        
   />
 

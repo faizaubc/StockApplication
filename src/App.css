@@ -337,6 +337,9 @@ width: 70%;
 .chart-title{
     color: #0071bd !important;
 }
+.headingclass{
+    align-items: center;
+}
 .price-container{
     display: flex !important;
     gap: 20px !important;

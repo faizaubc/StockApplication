@@ -64,8 +64,9 @@ const News = () => {
     <>
     
 <h2>Stocks News </h2>
-<h3>Input the News Here:</h3>
-
+<Row>
+<Col><h3>Choose the News From Here:</h3></Col>
+<Col>
   <AutoComplete
     style={{
       width: 200,
@@ -76,8 +77,10 @@ const News = () => {
     placeholder="Enter Search News Here"
    
   />
+  </Col>
+ </Row>
   <br></br>
-  <br></br>
+ 
   <Row gutter= {[24,24]}>
 {
       stockNews.value.map((news, i)=>(

@@ -56,8 +56,8 @@ const Stock = ({symbolName}) => {
       <Col span = {12}><Statistic title="Dividend Date" value = {calenderEvents?.dividendDate?.fmt}/></Col>
       <Col span = {12}><Statistic title="Earnings Date -01" value = {calenderEvents?.earnings?.earningsDate[0]?.fmt}/></Col>
       <Col span = {12}><Statistic title="Earnings Date -02" value = {calenderEvents?.earnings?.earningsDate[1]?.fmt}/></Col>
-      <Col span = {12}><Statistic title="Revenue High"value = {millify(calenderEvents?.earnings?.revenueHigh?.raw)}/></Col>
-      <Col span = {12}><Statistic title="Revenue Low" value = {millify(calenderEvents?.earnings?.revenueLow?.raw)}/></Col>
+      <Col span = {12}><Statistic title="Revenue High"value = {calenderEvents?.earnings?.revenueHigh?.raw}/></Col>
+      <Col span = {12}><Statistic title="Revenue Low" value = {calenderEvents?.earnings?.revenueLow?.raw}/></Col>
       <Col span = {12}><Statistic title="Last Dividend Value" value = {defaultStatistics?.lastDividendValue?.raw}/></Col>
       <Col span = {12}><Statistic title="Current Price" value = {financialData?.currentPrice?.fmt}/></Col>
       <Col span = {12}><Statistic title="Target High Price" value = {financialData?.targetHighPrice?.fmt}/></Col>

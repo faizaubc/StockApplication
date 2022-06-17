@@ -4,6 +4,8 @@ import {Layout, Typography, Space} from 'antd';
 import {Navbar, Exchanges, Homepage, Stock, News, StockDetails, StockChart} from './components';
 import './App.css';
 import StockSearch from './components/StockSearch';
+import StockD from './components/StockD';
+
 
 const App = () => {
   return (
@@ -32,6 +34,9 @@ const App = () => {
                 </Route>
                 <Route exact path ="/stockchart">
                   <StockChart/>
+                </Route>
+                <Route exact path ="/stockdetails/:stockid/:country">
+                  <StockD/>
                 </Route>
               </Switch>
 

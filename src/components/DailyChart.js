@@ -107,12 +107,12 @@ var state ={
     options={state.options}
     series={state.series}
     type="candlestick"
-    width="500"
+    width="1000"
   />
      <Chart
     options={optionsBar.options}
     series={optionsBar.series}
-    width="500"
+    width="1000"
     type="bar"
 
   />
