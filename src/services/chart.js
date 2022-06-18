@@ -22,12 +22,18 @@ export const chart= createApi({
                 url: `/query?function=TIME_SERIES_MONTHLY&symbol=${symbol}&apikey=HLCNBX33PQ7B2OOL`,
             })
         }),
+
+        getDailySMAData: builder.query({
+            query: ({symbol, timeperiod}) => ({
+                url: `/query?function=SMA&symbol=${symbol}&interval=daily&time_period=${timeperiod}&series_type=open&apikey=HLCNBX33PQ7B2OOL`,
+            })
+        }),
+     
       
     
     })
 });
 
 export const{
-   useGetDailyStockDataQuery, useGetWeeklyStockDataQuery, useGetMonthlyStockDataQuery
-    
+   useGetDailyStockDataQuery, useGetWeeklyStockDataQuery, useGetMonthlyStockDataQuery, useGetDailySMADataQuery
 }= chart

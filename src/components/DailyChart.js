@@ -1,10 +1,28 @@
 import React , {useState}from 'react';
-import { useGetDailyStockDataQuery } from '../services/chart';
+import { useGetDailyStockDataQuery , useGetDailySMADataQuery} from '../services/chart';
 import Chart from "react-apexcharts";
 import {Row,Col} from  'antd';
+import ReactApexChart from 'react-apexcharts';
+
+
 
 const DailyChart = ({symbolName, interval}) => {
+ 
+  let timeperiod=4;
+  let timeperiod1=9;
+  let timeperiod2=55;
+  let symbol=symbolName;
     const {data,isStockList}= useGetDailyStockDataQuery(symbolName);
+    const{data: stockIndicatorSMA}=useGetDailySMADataQuery({symbol,timeperiod});
+    const{data: stockIndicatorSMA1}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod1});
+    const{data: stockIndicatorSMA2}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod2});
+    console.log("Indicator:",stockIndicatorSMA);
+    console.log("Indicator 1:",stockIndicatorSMA1);
+    console.log("Indicator 2:",stockIndicatorSMA2);
+
+
+    
+  
     console.log('LineChart',symbolName);
     console.log('LineChart',data);
 
@@ -13,20 +31,59 @@ const DailyChart = ({symbolName, interval}) => {
     const categoriesD=[];
     const timestamp=[];
     const arrayHigh=[];
+    const seriesDataForObject=[];
+    const seriesDataForIndicator=[];
+    const seriesDataForIndicatorA=[];
+    const seriesDataForIndicatorA1=[];
+    const seriesDataForIndicatorA2=[];
+    
 
     console.log(data);
 
 
     console.log(data?.['Meta Data']);
     console.log(data?.["Time Series (Daily)"]);
+
+    const SMA=[];
+    for(const item in stockIndicatorSMA?.["Technical Analysis: SMA"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stockIndicatorSMA?.["Technical Analysis: SMA"]?.[item]?.["SMA"]);
+      SMA.push(arrayData);
+    }
+
+    const SMA1=[];
+    for(const item in stockIndicatorSMA1?.["Technical Analysis: SMA"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stockIndicatorSMA1?.["Technical Analysis: SMA"]?.[item]?.["SMA"]);
+      SMA1.push(arrayData);
+    }
+
+
+    const SMA2=[];
+    for(const item in stockIndicatorSMA2?.["Technical Analysis: SMA"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stockIndicatorSMA2?.["Technical Analysis: SMA"]?.[item]?.["SMA"]);
+      SMA2.push(arrayData);
+    }
+
+
+ 
    for(const item in data?.["Time Series (Daily)"]){
        
        const seriesDataArrayFields= [];
+       const arrayobj=[];
        seriesDataArrayFields.push(item);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["1. open"]);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["2. high"]);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["3. low"]);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["4. close"]);
+       arrayobj.push(data["Time Series (Daily)"][item]["1. open"]);
+       arrayobj.push(data["Time Series (Daily)"][item]["2. high"]);
+       arrayobj.push(data["Time Series (Daily)"][item]["3. low"]);
+       arrayobj.push(data["Time Series (Daily)"][item]["4. close"]);
        arrayHigh.push(data["Time Series (Daily)"][item]["4. close"]);
        //console.log(data["Time Series (Daily)"][item]["1. open"]);
        const seriesLinearDataTemp = [];
@@ -36,7 +93,58 @@ const DailyChart = ({symbolName, interval}) => {
        timestamp.push(item);
        categoriesD.push(data["Time Series (Daily)"][item]["5. volume"]);
        seriesLinearData.push(seriesLinearDataTemp);
+
+
+
+       const obj= {
+         x: item,
+         y:arrayobj
+       };
+       seriesDataForObject.push(obj);
+
+       const objIndicator= {
+        x: item,
+        y:data["Time Series (Daily)"][item]["4. close"]
+      };
+      seriesDataForIndicator.push(objIndicator);
+
+       let index=SMA?.findIndex(element=> element[0]==item);
+       let element = SMA?.[index]?.[1];
+
+      
+      let objIndicator1= {
+        x: item,
+        y:element
+      };
+
+       seriesDataForIndicatorA.push(objIndicator1);
+
+        index=SMA1?.findIndex(element=> element[0]==item);
+        element = SMA1?.[index]?.[1];
+
+      
+       objIndicator1= {
+        x: item,
+        y:element
+      };
+
+       seriesDataForIndicatorA1.push(objIndicator1);
+
+       index=SMA2?.findIndex(element=> element[0]==item);
+        element = SMA2?.[index]?.[1];
+
+      
+       objIndicator1= {
+        x: item,
+        y:element
+      };
+
+       seriesDataForIndicatorA2.push(objIndicator1);
+
+
    }
+
+   console.log("Actual Indicator", seriesDataForIndicatorA);
 
    let min = Math.min(...arrayHigh);
    let max= Math.max(...arrayHigh);
@@ -75,6 +183,8 @@ var state ={
  
  };
 
+ 
+
 
  var optionsBar = {
      
@@ -105,7 +215,82 @@ var state ={
 
  //var chartBar = new ApexCharts(document.querySelector("#chart-bar"), optionsBar);
  //chartBar.render();
+ console.log(seriesDataForObject);
+
+ var st =
+ {
+   series: [{
+     name: '4-DAY MA',
+     type: 'line',
+     data: seriesDataForIndicatorA
+   },{
+    name: '9-DAY MA',
+    type: 'line',
+    data: seriesDataForIndicatorA1
+  },
+
+  
+   
+   {
+     name: 'candle',
+     type: 'candlestick',
+     data: seriesDataForObject
+   }],
+   options: {
+     chart: {
+       height: 350,
+       type: 'line',
+     },
+     title: {
+       text: 'CandleStick Chart With SMA',
+       align: 'left'
+     },
+     stroke: {
+       width: [0.5,0.5, 1]
+     },
+     colors: ["#FF1654", "#247BA0"],
+     tooltip: {
+       shared: true,
+       custom: [function({seriesIndex, dataPointIndex, w}) {
+         return w.globals.series[seriesIndex][dataPointIndex]
+       }, function({ seriesIndex, dataPointIndex, w }) {
+         var o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
+         var h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
+         var l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
+         var c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
+         return (
+           '<div class="apexcharts-tooltip-candlestick">' +
+           '<div>Open: <span class="value">' +
+           o +
+           '</span></div>' +
+           '<div>High: <span class="value">' +
+           h +
+           '</span></div>' +
+           '<div>Low: <span class="value">' +
+           l +
+           '</span></div>' +
+           '<div>Close: <span class="value">' +
+           c +
+           '</span></div>' +
+           '</div>'
+         )
+       }]
+     },
+     xaxis: {
+       type: 'datetime'
+     }
+   },
  
+ 
+ };
+
+
+
+
+
+
+
+
 
 
 //if( isStockList) return 'Loading..';
@@ -139,6 +324,13 @@ var state ={
     type="bar"
 
   />
+
+<div id="chart1">
+ <ReactApexChart options={st.options} series={st.series} type="line" height={350} />
+</div>
+
+
+
   </>
   )
 }
