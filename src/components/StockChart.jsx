@@ -174,7 +174,8 @@ function StockChart() {
   return (
     <>
 <h2>{symbol} Stock Graph</h2>
-
+<Row>
+  <Col span={24}>
 <h3>Input the stocks here:</h3>
     <AutoComplete
         dropdownMatchSelectWidth={252}
@@ -188,10 +189,15 @@ function StockChart() {
     >
     <Input.Search size="large" placeholder="Start Typing Stock..." enterButton />
   </AutoComplete>
+ 
 
+  </Col>
+  </Row>
+  <Row>
   <br></br>
   <br></br>
-  
+  <Col span={8} >
+  <h3>Select Period Type:</h3>
   <AutoComplete
         style={{
         width: 200,
@@ -202,8 +208,12 @@ function StockChart() {
         defaultValue="Daily"
        
   />
+
+  </Col>
   <br></br>
   <br></br>
+  <Col span={8}>
+  <h3>Select Ticks Type:(Live Only)</h3>
 
   <AutoComplete
         style={{
@@ -218,8 +228,12 @@ function StockChart() {
        
   />
 
+
+</Col>
 <br></br>
 <br></br>
+<Col span={8}>
+<h3>Select Period Duration Type: (Live Only)</h3>
 
   <AutoComplete
         style={{
@@ -233,6 +247,9 @@ function StockChart() {
         
        
   />
+</Col>
+</Row>
+
 
 
     {DrawChart()}

@@ -1,6 +1,7 @@
 import React , {useState}from 'react';
 import { useGetDailyStockDataQuery } from '../services/chart';
 import Chart from "react-apexcharts";
+import {Row,Col} from  'antd';
 
 const DailyChart = ({symbolName, interval}) => {
     const {data,isStockList}= useGetDailyStockDataQuery(symbolName);
@@ -11,6 +12,7 @@ const DailyChart = ({symbolName, interval}) => {
     const seriesLinearData = [];
     const categoriesD=[];
     const timestamp=[];
+    const arrayHigh=[];
 
     console.log(data);
 
@@ -25,6 +27,7 @@ const DailyChart = ({symbolName, interval}) => {
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["2. high"]);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["3. low"]);
        seriesDataArrayFields.push(data["Time Series (Daily)"][item]["4. close"]);
+       arrayHigh.push(data["Time Series (Daily)"][item]["4. close"]);
        //console.log(data["Time Series (Daily)"][item]["1. open"]);
        const seriesLinearDataTemp = [];
        seriesLinearDataTemp.push(item);
@@ -34,7 +37,12 @@ const DailyChart = ({symbolName, interval}) => {
        categoriesD.push(data["Time Series (Daily)"][item]["5. volume"]);
        seriesLinearData.push(seriesLinearDataTemp);
    }
-  
+
+   let min = Math.min(...arrayHigh);
+   let max= Math.max(...arrayHigh);
+   let maxDate = timestamp?.[0];
+   let count= timestamp?.length-1;
+   let minDate =timestamp?.[count];
 
 
 console.log(seriesData);
@@ -103,6 +111,21 @@ var state ={
 //if( isStockList) return 'Loading..';
   return (
     <>
+   <br></br>
+   <br></br>
+ 
+ <Row>
+<Col span={12}>
+  <h3>High b/w {minDate} to {maxDate}</h3>
+  <div><h3>${max}</h3></div>
+</Col>
+<Col span={12}>
+  <h3>Low b/w {minDate} to {maxDate}</h3>
+  <div><h3>${min}</h3></div>
+</Col>
+ </Row>
+    <br></br>
+    <br></br>
     <Chart
     options={state.options}
     series={state.series}

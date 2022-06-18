@@ -1,6 +1,7 @@
 import React , {useState}from 'react';
 import { useGetDailyStockDataQuery, useGetMonthlyStockDataQuery } from '../services/chart';
 import Chart from "react-apexcharts";
+import {Row,Col} from  'antd';
 
 
 const MontlyChart = ({symbolName, interval}) => {
@@ -13,6 +14,7 @@ const MontlyChart = ({symbolName, interval}) => {
     const seriesLinearData = [];
     const categoriesD=[];
     const timestamp=[];
+    const arrayHigh=[];
 
     console.log(data);
 
@@ -30,14 +32,19 @@ const MontlyChart = ({symbolName, interval}) => {
        //console.log(data["Monthly Time Series"][item]["1. open"]);
        const seriesLinearDataTemp = [];
        seriesLinearDataTemp.push(item);
-       seriesLinearDataTemp.push(data["Monthly Time Series"][item]["5. volume"])
+       seriesLinearDataTemp.push(data["Monthly Time Series"][item]["5. volume"]);
+       arrayHigh.push(data["Monthly Time Series"][item]["4. close"]);
        seriesData.push(seriesDataArrayFields);
        timestamp.push(item);
        categoriesD.push(data["Monthly Time Series"][item]["5. volume"]);
        seriesLinearData.push(seriesLinearDataTemp);
    }
   
-
+   let min = Math.min(...arrayHigh);
+   let max= Math.max(...arrayHigh);
+   let maxDate = timestamp?.[0];
+   let count= timestamp?.length-1;
+   let minDate =timestamp?.[count];
 
 console.log(seriesData);
 console.log(seriesLinearData);
@@ -97,6 +104,17 @@ var state ={
  };
   return (
     <>
+
+<Row>
+<Col span={12}>
+  <h3>High b/w {minDate} to {maxDate}</h3>
+  <div><h3>${max}</h3></div>
+</Col>
+<Col span={12}>
+  <h3>Low b/w {minDate} to {maxDate}</h3>
+  <div><h3>${min}</h3></div>
+</Col>
+ </Row>
     <Chart
     options={state.options}
     series={state.series}
