@@ -1,8 +1,9 @@
 import React , {useState}from 'react';
-import { useGetDailyStockDataQuery , useGetDailySMADataQuery} from '../services/chart';
+import { useGetDailyStockDataQuery , useGetDailySMADataQuery, useGetDailyRSIDataQuery} from '../services/chart';
 import Chart from "react-apexcharts";
-import {Row,Col} from  'antd';
+import {Row,Col, Checkbox} from  'antd';
 import ReactApexChart from 'react-apexcharts';
+
 
 
 
@@ -11,14 +12,17 @@ const DailyChart = ({symbolName, interval}) => {
   let timeperiod=4;
   let timeperiod1=9;
   let timeperiod2=55;
+  let timeperiodRSI=10;
   let symbol=symbolName;
     const {data,isStockList}= useGetDailyStockDataQuery(symbolName);
     const{data: stockIndicatorSMA}=useGetDailySMADataQuery({symbol,timeperiod});
     const{data: stockIndicatorSMA1}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod1});
     const{data: stockIndicatorSMA2}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod2});
+    const{data: stockIndicatorRSI}=useGetDailyRSIDataQuery({symbol,timeperiod:timeperiodRSI});
     console.log("Indicator:",stockIndicatorSMA);
     console.log("Indicator 1:",stockIndicatorSMA1);
     console.log("Indicator 2:",stockIndicatorSMA2);
+    console.log("RSI:",stockIndicatorRSI);
 
 
     
@@ -36,6 +40,9 @@ const DailyChart = ({symbolName, interval}) => {
     const seriesDataForIndicatorA=[];
     const seriesDataForIndicatorA1=[];
     const seriesDataForIndicatorA2=[];
+    const volumeArray= [];
+    var [colorsArray, setColorsArray]= useState(["#e6f7ff","#e6f7ff", "#e6f7ff"]);
+    const seriesDataForRSIIndicator=[];
     
 
     console.log(data);
@@ -43,6 +50,14 @@ const DailyChart = ({symbolName, interval}) => {
 
     console.log(data?.['Meta Data']);
     console.log(data?.["Time Series (Daily)"]);
+
+    const RSI=[];
+    for(const item in stockIndicatorRSI?.["Technical Analysis: RSI"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stockIndicatorRSI?.["Technical Analysis: RSI"]?.[item]?.["RSI"]);
+      RSI.push(arrayData);
+    }
 
     const SMA=[];
     for(const item in stockIndicatorSMA?.["Technical Analysis: SMA"]){
@@ -141,8 +156,22 @@ const DailyChart = ({symbolName, interval}) => {
 
        seriesDataForIndicatorA2.push(objIndicator1);
 
+       objIndicator1= {
+        x: item,
+        y:data["Time Series (Daily)"][item]["5. volume"]
+      };
+
+      volumeArray.push(objIndicator1);
+
+      index=RSI?.findIndex(element=> element[0]==item);
+      element =RSI?.[index]?.[1];
+      seriesDataForRSIIndicator.push(element);
+    
+     
+
 
    }
+
 
    console.log("Actual Indicator", seriesDataForIndicatorA);
 
@@ -164,7 +193,7 @@ var state ={
    options: {
      chart: {
        type: 'candlestick',
-       height: 350
+       height: 200
      },
      title: {
        text: 'CandleStick Chart',
@@ -189,12 +218,13 @@ var state ={
  var optionsBar = {
      
    series: [{
-     data: categoriesD
+     data: categoriesD.reverse(),
+     name:"volume"
    }],
    options: {
      chart: {
        type: 'bar',
-       height: 350
+       height: 50
      },
      plotOptions: {
        bar: {
@@ -205,12 +235,54 @@ var state ={
        enabled: false
      },
      xaxis: {
-       categories: timestamp,
+       categories: timestamp.reverse(),
      }
    },
  
  
  };
+
+ 
+ var lineRSI = {
+          
+  series: [{
+      name: "RSI",
+      data: seriesDataForRSIIndicator.reverse()
+  }],
+  options: {
+    chart: {
+      height: 100,
+      type: 'line',
+      zoom: {
+        enabled: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight',
+      width: [1]
+    },
+    
+    title: {
+      text: 'RSI Indicator',
+      align: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+      },
+    },  
+     colors: ["#FF0000"],
+    xaxis: {
+      categories:timestamp,
+    }
+  },
+
+
+};
 
 
  //var chartBar = new ApexCharts(document.querySelector("#chart-bar"), optionsBar);
@@ -228,6 +300,11 @@ var state ={
     type: 'line',
     data: seriesDataForIndicatorA1
   },
+  {
+    name: '55-DAY MA',
+    type: 'line',
+    data: seriesDataForIndicatorA2
+  },
 
   
    
@@ -243,12 +320,12 @@ var state ={
      },
      title: {
        text: 'CandleStick Chart With SMA',
-       align: 'left'
+       align: 'middle'
      },
      stroke: {
-       width: [0.5,0.5, 1]
+       width: [0.5,0.5, 0.5, 1]
      },
-     colors: ["#FF1654", "#247BA0"],
+     colors: colorsArray,
      tooltip: {
        shared: true,
        custom: [function({seriesIndex, dataPointIndex, w}) {
@@ -285,12 +362,36 @@ var state ={
  };
 
 
+// #e6f7ff
+const onChange = (checkedValues) => {
+  console.log('checked = ', checkedValues);
+  let color="";
+  let arrayDataValues= ["#e6f7ff","#e6f7ff", "#e6f7ff"];
+  for(let x in checkedValues){
+    if(checkedValues[x]=="4")
+    {
+       color= "#FF1654";
+       arrayDataValues[0]=color;
+    }
+    
+    
+    if(checkedValues[x]=="9")
+    {
+       color= "#247BA0";
+       arrayDataValues[1]=color;
+    }
+  
 
-
-
-
-
-
+    if(checkedValues[x]=="55")
+    {
+       color= "#BF40BF";
+       arrayDataValues[2]=color;
+    }
+    
+  }
+  setColorsArray(arrayDataValues);
+  console.log("Color Array Is:", arrayDataValues);
+};
 
 
 //if( isStockList) return 'Loading..';
@@ -316,19 +417,54 @@ var state ={
     series={state.series}
     type="candlestick"
     width="1000"
+    height="300"
   />
      <Chart
     options={optionsBar.options}
     series={optionsBar.series}
     width="1000"
+    height="200"
     type="bar"
 
   />
+  <Chart
+    options={lineRSI.options}
+    series={lineRSI.series}
+    width="1000"
+    height="200"
+    type="line"
 
+  />
+
+  <br></br>
+  <h3>Pick The Indicators:</h3>
+<Checkbox.Group
+    style={{
+      width: '100%',
+    }}
+    onChange={onChange}
+  >
+    <Row>
+      <Col span={8}>
+        <Checkbox value="4">4 Day Moving Average</Checkbox>
+      </Col>
+      <Col span={8}>
+        <Checkbox value="9">9 Day Moving Average</Checkbox>
+      </Col>
+      <Col span={8}>
+        <Checkbox value="55">55 Day Moving Average</Checkbox>
+      </Col>
+      <Col span={8}>
+        <Checkbox value="D">D</Checkbox>
+      </Col>
+      <Col span={8}>
+        <Checkbox value="E">E</Checkbox>
+      </Col>
+    </Row>
+  </Checkbox.Group>
 <div id="chart1">
  <ReactApexChart options={st.options} series={st.series} type="line" height={350} />
 </div>
-
 
 
   </>
