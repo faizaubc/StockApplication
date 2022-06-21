@@ -80,7 +80,7 @@ var state ={
  var optionsBar = {
      
    series: [{
-     data: categoriesD
+     data: categoriesD.reverse()
    }],
    options: {
      chart: {
@@ -96,7 +96,7 @@ var state ={
        enabled: false
      },
      xaxis: {
-       categories: timestamp,
+       categories: timestamp.reverse(),
      }
    },
  
@@ -125,6 +125,7 @@ var state ={
     options={optionsBar.options}
     series={optionsBar.series}
     width="1000"
+    height="200"
     type="bar"
 
   />

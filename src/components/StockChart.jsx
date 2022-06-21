@@ -17,10 +17,32 @@ function StockChart() {
     const [intervalSelection, setIntervalSelection]= useState("Daily");
     const [intervalLiveSelection, setIntervalLiveSelection]= useState("5m");
     const [rangeLiveSelection, setRangeLiveSelection]= useState("5m");
+    const [display, setDisplay]= useState('none');//setting the item visible for weekly
+    const [weeklyInterval, setWeeklyInterval]= useState('2020');
 
-
+    //weekly interval creation:
+    //hide the weekly drop down
+    var today = new Date();
     
+    let year = today.getFullYear();
+    console.log(year);
+    year = year-11;
+    const optionsWeekly=[];
+    for(let i = 0; i < 10; i ++){
+        
+       const obj= {
+       value: year +i
+      };
 
+      optionsWeekly.push(obj);
+    }
+
+    //make sure the element is not null before setting the display to not visible
+    if(document.getElementById("weekly")!= null)
+      document.getElementById("weekly").style.display = display;
+ 
+    
+   
     //This is the data for searching time interval
     const optionsTimeInterval = [
         {
@@ -95,7 +117,7 @@ function StockChart() {
     //document.getElementById('interval').disabled=true;
         if(!flag)
             return <h1><br></br>Enter the Stock Data to See Charts !</h1>;
-        return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection} liveinterval={intervalLiveSelection} range={rangeLiveSelection}/>;
+        return <LineChart symbolName={symbolChangesOnSelect} interval={intervalSelection} liveinterval={intervalLiveSelection} range={rangeLiveSelection} weekly={weeklyInterval}/>;
      }
 
      //Search Result for the drop down of the Stock Search Query
@@ -145,6 +167,12 @@ function StockChart() {
   const onSelectForStockInterval = (value) => {
     console.log('Stock Interval Is Selected', value);
     setIntervalSelection(value);
+
+    if(value=="Weekly"){
+      setDisplay('inline');
+    }
+    else 
+     setDisplay('none');
    
 
   };
@@ -168,6 +196,15 @@ function StockChart() {
       return false;
   
     };
+
+    //select the year for the weekly chart:
+   
+    const onSelectForWeekly = (value) => {
+      console.log('Weekly Year Selected', value);
+      setWeeklyInterval(value);
+     
+  
+    };
   
   //makes sure data for the api is here
   if( isStockList) return 'Loading..';
@@ -175,7 +212,7 @@ function StockChart() {
     <>
 <h2>{symbol} Stock Graph</h2>
 <Row>
-  <Col span={24}>
+  <Col span={12}>
 <h3>Input the stocks here:</h3>
     <AutoComplete
         dropdownMatchSelectWidth={252}
@@ -191,6 +228,22 @@ function StockChart() {
   </AutoComplete>
  
 
+  </Col>
+  <Col>
+   <div id="weekly">
+   <h3>Select Time Frame :</h3>
+   <AutoComplete
+        style={{
+        width: 200,
+        }}
+        options={optionsWeekly}
+        onSelect={onSelectForWeekly}
+        placeholder="Weekly Interval"
+        defaultValue="2020"
+       
+  />
+
+   </div>
   </Col>
   </Row>
   <Row>

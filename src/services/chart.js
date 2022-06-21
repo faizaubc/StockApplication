@@ -30,8 +30,8 @@ export const chart= createApi({
         }),
 
         getDailyRSIData: builder.query({
-            query: ({symbol, timeperiod}) => ({
-                url: `/query?function=RSI&symbol=${symbol}&interval=daily&time_period=${timeperiod}&series_type=open&apikey=HLCNBX33PQ7B2OOL`,
+            query: ({symbol, timeperiod, int}) => ({
+                url: `/query?function=RSI&symbol=${symbol}&interval=${int}&time_period=${timeperiod}&series_type=open&apikey=HLCNBX33PQ7B2OOL`,
             })
         }),
      

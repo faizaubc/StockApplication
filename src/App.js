@@ -23,7 +23,7 @@ const App = () => {
                 <Route exact path="/stock">
                   <StockSearch/>
                 </Route>
-                <Route exact path="/exchanges">
+                <Route exact path="/indicators">
                   <Exchanges/>
                 </Route>
                 <Route exact path ="/stock/:stockid">
@@ -50,7 +50,7 @@ const App = () => {
           </Typography.Title>
           <Space>
             <Link to="/">Home</Link>
-            <Link to="/exchanges">Exchanges</Link>
+            <Link to="/indicators">Indicators</Link>
             <Link to="news">News</Link>
           </Space>
         </div>

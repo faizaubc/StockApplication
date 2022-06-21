@@ -12,14 +12,14 @@ import StockDetails from './StockDetails';
 
 
 
-const LineChart = ({symbolName, interval ,liveinterval,range}) => {
+const LineChart = ({symbolName, interval ,liveinterval,range, weekly}) => {
   
     function Initialize(){
         if(interval=="Daily")
         return <DailyChart symbolName={symbolName} interval={interval}/>
 
         if(interval=="Weekly")
-        return <WeeklyChart symbolName={symbolName} interval={interval}/>
+        return <WeeklyChart symbolName={symbolName} interval={interval} weeklyInterval={weekly}/>
 
         if(interval=="Monthly")
         return <MonthlyChart symbolName={symbolName} interval={interval}/>

@@ -1,28 +1,46 @@
 import React , {useState}from 'react';
-import { useGetDailyStockDataQuery,useGetWeeklyStockDataQuery } from '../services/chart';
+import { useGetWeeklyStockDataQuery, useGetDailyRSIDataQuery } from '../services/chart';
 import Chart from "react-apexcharts";
 import {Row,Col} from  'antd';
 
 
-const WeeklyChart = ({symbolName, interval}) => {
+const WeeklyChart = ({symbolName, interval, weeklyInterval}) => {
 
-    const {data,isStockList}=useGetWeeklyStockDataQuery(symbolName);
+  const {data,isStockList}=useGetWeeklyStockDataQuery(symbolName);
+  let timeperiodRSI=10;
+  let symbol=symbolName;
+  let inter="weekly";
+  const{data: stockIndicatorRSI}=useGetDailyRSIDataQuery({symbol,timeperiod:timeperiodRSI, int:inter});
+ 
     console.log('WeeklyChart',symbolName);
     console.log('WeeklyChart',data);
+    console.log("RSI Data", stockIndicatorRSI);
 
     const seriesData = [];
     const seriesLinearData = [];
     const categoriesD=[];
     const timestamp=[];
     const arrayHigh=[];
+    const seriesDataForRSIIndicator=[];
 
     console.log(data);
 
 
     console.log(data?.['Meta Data']);
     console.log(data?.["Weekly Time Series"]);
+
+    //putting the data from object to array for RSI indicator with date and value pairs
+    //format [[date, value],[date, value] .... ] 
+    const RSI=[];
+    for(const item in stockIndicatorRSI?.["Technical Analysis: RSI"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stockIndicatorRSI?.["Technical Analysis: RSI"]?.[item]?.["RSI"]);
+      RSI.push(arrayData);
+    }
    for(const item in data?.["Weekly Time Series"]){
-       
+       if(Date.parse(weeklyInterval)< Date.parse(item))
+       {
        const seriesDataArrayFields= [];
        seriesDataArrayFields.push(item);
        seriesDataArrayFields.push(data["Weekly Time Series"][item]["1. open"]);
@@ -38,6 +56,13 @@ const WeeklyChart = ({symbolName, interval}) => {
        timestamp.push(item);
        categoriesD.push(data["Weekly Time Series"][item]["5. volume"]);
        seriesLinearData.push(seriesLinearDataTemp);
+
+       //finding the date value in the array
+       let index=RSI?.findIndex(element=> element[0]==item);
+       let element =RSI?.[index]?.[1];
+       //pusing the element in the array for RSI indicator
+       seriesDataForRSIIndicator.push(element);
+       }
    }
 
    let min = Math.min(...arrayHigh);
@@ -82,7 +107,8 @@ var state ={
  var optionsBar = {
      
    series: [{
-     data: categoriesD
+     name:'volume',
+     data: categoriesD.reverse()
    }],
    options: {
      chart: {
@@ -98,12 +124,53 @@ var state ={
        enabled: false
      },
      xaxis: {
-       categories: timestamp,
+       categories: timestamp.reverse(),
      }
    },
  
  
  };
+
+ var lineRSI = {
+          
+  series: [{
+      name: "RSI",
+      data: seriesDataForRSIIndicator.reverse()
+  }],
+  options: {
+    chart: {
+      height: 100,
+      type: 'line',
+      zoom: {
+        enabled: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight',
+      width: [1]
+    },
+    
+    title: {
+      text: 'RSI Indicator',
+      align: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+      },
+    },  
+     colors: ["#FF0000"],
+    xaxis: {
+      categories:timestamp,
+    }
+  },
+
+
+};
 
   return (
     <>
@@ -128,7 +195,17 @@ var state ={
     options={optionsBar.options}
     series={optionsBar.series}
     width="1000"
+    height="200"
     type="bar"
+
+  />
+
+<Chart
+    options={lineRSI.options}
+    series={lineRSI.series}
+    width="1000"
+    height="200"
+    type="line"
 
   />
   </>

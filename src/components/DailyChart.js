@@ -14,11 +14,12 @@ const DailyChart = ({symbolName, interval}) => {
   let timeperiod2=55;
   let timeperiodRSI=10;
   let symbol=symbolName;
+  let inter="daily";
     const {data,isStockList}= useGetDailyStockDataQuery(symbolName);
     const{data: stockIndicatorSMA}=useGetDailySMADataQuery({symbol,timeperiod});
     const{data: stockIndicatorSMA1}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod1});
     const{data: stockIndicatorSMA2}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod2});
-    const{data: stockIndicatorRSI}=useGetDailyRSIDataQuery({symbol,timeperiod:timeperiodRSI});
+    const{data: stockIndicatorRSI}=useGetDailyRSIDataQuery({symbol,timeperiod:timeperiodRSI, int:inter});
     console.log("Indicator:",stockIndicatorSMA);
     console.log("Indicator 1:",stockIndicatorSMA1);
     console.log("Indicator 2:",stockIndicatorSMA2);

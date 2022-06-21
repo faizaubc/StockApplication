@@ -25,7 +25,7 @@ const Navbar = () => {
                 <Link to="/stock">Stock</Link>
             </Menu.Item> 
             <Menu.Item icon={<MoneyCollectOutlined/>}>
-                <Link to="/exchanges">Exchanges</Link>
+                <Link to="/indicators">Indicators</Link>
             </Menu.Item> 
             <Menu.Item icon={<LineChartOutlined/>}>
                 <Link to="/stockchart">Chart</Link>

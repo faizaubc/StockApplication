@@ -41,7 +41,7 @@ const volumearray= data?.chart?.result[0]?.indicators?.quote[0]?.volume;
     seriesCandleStickChartSeriesData.push(closearray[i]?.toFixed(2));
     arrayHigh.push(closearray[i]?.toFixed(2));
     seriesData.push(seriesCandleStickChartSeriesData);
-    timestamp.push(timearray[i]*1000);
+    timestamp.push(new Date(timearray[i]*1000).toLocaleString("en-US"));
     categoriesD.push(volumearray[i]?.toFixed(2));
  }
 
@@ -53,8 +53,8 @@ const volumearray= data?.chart?.result[0]?.indicators?.quote[0]?.volume;
  let count= timestamp?.length-1;
  let maxDate =timestamp?.[count];
  console.log(minDate);
- let stringMinDate= new Date(minDate).toLocaleString("en-US");
-let stringMaxDate= new Date(maxDate).toLocaleString("en-US");
+ let stringMinDate= minDate;
+let stringMaxDate= maxDate;
 
  var state ={
      
@@ -138,6 +138,7 @@ var optionsBar = {
     series={optionsBar.series}
     width="1000"
     type="bar"
+    height ="200"
 
   />
   </>
