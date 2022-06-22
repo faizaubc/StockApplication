@@ -34,6 +34,12 @@ export const chart= createApi({
                 url: `/query?function=RSI&symbol=${symbol}&interval=${int}&time_period=${timeperiod}&series_type=open&apikey=HLCNBX33PQ7B2OOL`,
             })
         }),
+
+        getDailyStocData: builder.query({
+            query: (symbol) => ({
+                url: `/query?function=STOCH&symbol=${symbol}&interval=daily&apikey=HLCNBX33PQ7B2OOL`,
+            })
+        }),
      
       
     
@@ -41,5 +47,5 @@ export const chart= createApi({
 });
 
 export const{
-   useGetDailyStockDataQuery, useGetWeeklyStockDataQuery, useGetMonthlyStockDataQuery, useGetDailySMADataQuery, useGetDailyRSIDataQuery
+   useGetDailyStockDataQuery, useGetWeeklyStockDataQuery, useGetMonthlyStockDataQuery, useGetDailySMADataQuery, useGetDailyRSIDataQuery, useGetDailyStocDataQuery
 }= chart

@@ -1,5 +1,5 @@
 import React , {useState}from 'react';
-import { useGetDailyStockDataQuery , useGetDailySMADataQuery, useGetDailyRSIDataQuery} from '../services/chart';
+import { useGetDailyStockDataQuery , useGetDailySMADataQuery, useGetDailyRSIDataQuery, useGetDailyStocDataQuery} from '../services/chart';
 import Chart from "react-apexcharts";
 import {Row,Col, Checkbox} from  'antd';
 import ReactApexChart from 'react-apexcharts';
@@ -20,10 +20,13 @@ const DailyChart = ({symbolName, interval}) => {
     const{data: stockIndicatorSMA1}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod1});
     const{data: stockIndicatorSMA2}=useGetDailySMADataQuery({symbol,timeperiod:timeperiod2});
     const{data: stockIndicatorRSI}=useGetDailyRSIDataQuery({symbol,timeperiod:timeperiodRSI, int:inter});
+     //const{data: stockIndicatorStoc}=useGetDailyStocDataQuery(symbol);
+     const [stoc, setstoc] = useState([])
     console.log("Indicator:",stockIndicatorSMA);
     console.log("Indicator 1:",stockIndicatorSMA1);
     console.log("Indicator 2:",stockIndicatorSMA2);
     console.log("RSI:",stockIndicatorRSI);
+   // console.log("Scholastic",stockIndicatorStoc);
 
 
     
@@ -44,6 +47,8 @@ const DailyChart = ({symbolName, interval}) => {
     const volumeArray= [];
     var [colorsArray, setColorsArray]= useState(["#e6f7ff","#e6f7ff", "#e6f7ff"]);
     const seriesDataForRSIIndicator=[];
+     const seriesDataForSTOCSlowDIndicator=[];
+     const seriesDataForSTOCSlowKIndicator=[];
     
 
     console.log(data);
@@ -51,6 +56,18 @@ const DailyChart = ({symbolName, interval}) => {
 
     console.log(data?.['Meta Data']);
     console.log(data?.["Time Series (Daily)"]);
+
+
+    const STOC=[];
+    for(const item in stoc?.["Technical Analysis: STOCH"]){
+      const arrayData=[];
+      arrayData.push(item);
+      arrayData.push(stoc?.["Technical Analysis: STOCH"]?.[item]?.["SlowD"]);
+      arrayData.push(stoc?.["Technical Analysis: STOCH"]?.[item]?.["SlowK"]);
+      STOC.push(arrayData);
+    }
+
+    console.log("Scholarastic",STOC);
 
     const RSI=[];
     for(const item in stockIndicatorRSI?.["Technical Analysis: RSI"]){
@@ -168,11 +185,17 @@ const DailyChart = ({symbolName, interval}) => {
       element =RSI?.[index]?.[1];
       seriesDataForRSIIndicator.push(element);
     
-     
+      index=STOC?.findIndex(element=> element[0]==item);
+      element =STOC?.[index]?.[1];
+      let element2 =STOC?.[index]?.[2];
+      seriesDataForSTOCSlowDIndicator?.push(element);
+      seriesDataForSTOCSlowKIndicator?.push(element2);
+
 
 
    }
-
+   console.log("K", seriesDataForSTOCSlowKIndicator);
+   console.log("D", seriesDataForSTOCSlowDIndicator);
 
    console.log("Actual Indicator", seriesDataForIndicatorA);
 
@@ -285,7 +308,48 @@ var state ={
 
 };
 
+//Stoc chart
+let stocchart = {
+          
+  series: [{
+      name: "SLOWD",
+      data: seriesDataForSTOCSlowDIndicator.reverse()
+  },{
+    name: "SLOWK",
+    data: seriesDataForSTOCSlowKIndicator.reverse()
+},  ],
+  options: {
+    chart: {
+      height: 350,
+      type: 'line',
+      zoom: {
+        enabled: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight',
+      width: [2,2]
+    },
+    title: {
+      text: 'Stochastic Oscillator',
+      align: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+      },
+    },
+    xaxis: {
+      categories: timestamp,
+    }
+  },
 
+
+};
  //var chartBar = new ApexCharts(document.querySelector("#chart-bar"), optionsBar);
  //chartBar.render();
  console.log(seriesDataForObject);
@@ -395,6 +459,16 @@ const onChange = (checkedValues) => {
 };
 
 
+const fetchData = () => {
+  fetch(`https://www.alphavantage.co/query?function=STOCH&symbol=${symbol}&interval=daily&apikey=HLCNBX33PQ7B2OOL`)
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      setstoc(data);
+      console.log(stoc);
+    })
+}
 //if( isStockList) return 'Loading..';
   return (
     <>
@@ -467,7 +541,11 @@ const onChange = (checkedValues) => {
  <ReactApexChart options={st.options} series={st.series} type="line" height={350} />
 </div>
 
+<div id="chart1">
+  <ReactApexChart options={stocchart.options} series={stocchart.series} type="line" height={350} />
+</div>
 
+<button onClick={fetchData}>Fetch Users</button>
   </>
   )
 }
