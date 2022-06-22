@@ -469,6 +469,228 @@ const fetchData = () => {
       console.log(stoc);
     })
 }
+
+
+let chartsync = {
+          
+  series: [{
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 60
+    })
+  }],
+  options: {
+    chart: {
+      id: 'fb',
+      group: 'social',
+      type: 'line',
+      height: 160
+    },
+    colors: ['#008FFB'],
+    markers: {
+      size: 6,
+      hover: {
+        size: 10
+      }
+    },
+    tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: false
+      },
+      marker: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
+    },dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight'
+    },  yaxis: {
+      tickAmount: 2
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+  },
+
+  seriesLine2: [{
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 30
+    })
+  }],
+  optionsLine2: {
+    chart: {
+      id: 'tw',
+      group: 'social',
+      type: 'line',
+      height: 160
+    },
+    colors: ['#546E7A'],
+    markers: {
+      size: 6,
+      hover: {
+        size: 10
+      }
+    },
+    tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: false
+      },
+      marker: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
+    },dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight'
+    }, 
+     yaxis: {
+      tickAmount: 2
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+  },
+
+  seriesArea: [{
+    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
+      min: 10,
+      max: 60
+    })
+  }],
+  optionsArea: {
+    chart: {
+      id: 'yt',
+      group: 'social',
+      type: 'area',
+      height: 160
+    },
+    colors: ['#00E396'],
+    markers: {
+      size: 6,
+      hover: {
+        size: 10
+      }
+    },
+    tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: false
+      },
+      marker: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
+    },dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight'
+    }, 
+     yaxis: {
+      tickAmount: 2
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+  },
+
+ 
+  
+
+
+};
+
+let  Apex = {
+  chart: {
+    height: 160,
+    group: 'social',
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'straight'
+  },
+  toolbar: {
+    tools: {
+      selection: false
+    }
+  },
+  markers: {
+    size: 6,
+    hover: {
+      size: 10
+    }
+  },
+  tooltip: {
+    followCursor: false,
+    theme: 'dark',
+    x: {
+      show: false
+    },
+    marker: {
+      show: false
+    },
+    y: {
+      title: {
+        formatter: function() {
+          return ''
+        }
+      }
+    }
+  },
+  grid: {
+    clipMarkers: false
+  },
+  yaxis: {
+    tickAmount: 2
+  },
+  xaxis: {
+    type: 'datetime'
+  },
+}
+
+function generateDayWiseTimeSeries(baseval, count, yrange) {
+  var i = 0;
+  var series = [];
+  while (i < count) {
+    var x = baseval;
+    var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+    series.push([x, y]);
+    baseval += 86400000;
+    i++;
+  }
+  return series;
+}
 //if( isStockList) return 'Loading..';
   return (
     <>
@@ -546,6 +768,19 @@ const fetchData = () => {
 </div>
 
 <button onClick={fetchData}>Fetch Users</button>
+<div id="wrapper">
+    <div id="chart-line">
+      <ReactApexChart options={chartsync.options} series={chartsync.series} type="line" height={160} />
+    </div>
+    <div id="chart-line2">
+      <ReactApexChart options={chartsync.optionsLine2} series={chartsync.seriesLine2} type="line" height={160} />
+    </div>
+    <div id="chart-area">
+      <ReactApexChart options={chartsync.optionsArea} series={chartsync.seriesArea} type="area" height={160} />
+    </div>
+  </div>              
+                
+             
   </>
   )
 }
