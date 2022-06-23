@@ -49,6 +49,7 @@ const DailyChart = ({symbolName, interval}) => {
     const seriesDataForRSIIndicator=[];
      const seriesDataForSTOCSlowDIndicator=[];
      const seriesDataForSTOCSlowKIndicator=[];
+     const seriescombineddatavolume=[];
     
 
     console.log(data);
@@ -230,7 +231,23 @@ var state ={
        tooltip: {
          enabled: true
        }
-     }
+     },tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: true
+      },
+      marker: {
+        show: true
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
+    }
    },
  
  
@@ -248,7 +265,7 @@ var state ={
    options: {
      chart: {
        type: 'bar',
-       height: 50
+       height: 200
      },
      plotOptions: {
        bar: {
@@ -260,7 +277,25 @@ var state ={
      },
      xaxis: {
        categories: timestamp.reverse(),
-     }
+        type: 'datetime'
+      
+     },tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: true
+      },
+      marker: {
+        show: true
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
+    }
    },
  
  
@@ -302,6 +337,23 @@ var state ={
      colors: ["#FF0000"],
     xaxis: {
       categories:timestamp,
+      type: 'datetime'
+    },tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: true
+      },
+      marker: {
+        show: true
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
     }
   },
 
@@ -345,8 +397,29 @@ let stocchart = {
     },
     xaxis: {
       categories: timestamp,
+      type: 'datetime'
+    },
+    tooltip: {
+      followCursor: false,
+      theme: 'dark',
+      x: {
+        show: true
+      },
+      marker: {
+        show: true
+      },
+      y: {
+        title: {
+          formatter: function() {
+            return ''
+          }
+        }
+      }
     }
   },
+  yaxis: {
+    tickAmount: 2
+  }
 
 
 };
@@ -471,162 +544,7 @@ const fetchData = () => {
 }
 
 
-let chartsync = {
-          
-  series: [{
-    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-      min: 10,
-      max: 60
-    })
-  }],
-  options: {
-    chart: {
-      id: 'fb',
-      group: 'social',
-      type: 'line',
-      height: 160
-    },
-    colors: ['#008FFB'],
-    markers: {
-      size: 6,
-      hover: {
-        size: 10
-      }
-    },
-    tooltip: {
-      followCursor: false,
-      theme: 'dark',
-      x: {
-        show: false
-      },
-      marker: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: function() {
-            return ''
-          }
-        }
-      }
-    },dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    },  yaxis: {
-      tickAmount: 2
-    },
-    xaxis: {
-      type: 'datetime'
-    },
-  },
 
-  seriesLine2: [{
-    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-      min: 10,
-      max: 30
-    })
-  }],
-  optionsLine2: {
-    chart: {
-      id: 'tw',
-      group: 'social',
-      type: 'line',
-      height: 160
-    },
-    colors: ['#546E7A'],
-    markers: {
-      size: 6,
-      hover: {
-        size: 10
-      }
-    },
-    tooltip: {
-      followCursor: false,
-      theme: 'dark',
-      x: {
-        show: false
-      },
-      marker: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: function() {
-            return ''
-          }
-        }
-      }
-    },dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    }, 
-     yaxis: {
-      tickAmount: 2
-    },
-    xaxis: {
-      type: 'datetime'
-    },
-  },
-
-  seriesArea: [{
-    data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-      min: 10,
-      max: 60
-    })
-  }],
-  optionsArea: {
-    chart: {
-      id: 'yt',
-      group: 'social',
-      type: 'area',
-      height: 160
-    },
-    colors: ['#00E396'],
-    markers: {
-      size: 6,
-      hover: {
-        size: 10
-      }
-    },
-    tooltip: {
-      followCursor: false,
-      theme: 'dark',
-      x: {
-        show: false
-      },
-      marker: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: function() {
-            return ''
-          }
-        }
-      }
-    },dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    }, 
-     yaxis: {
-      tickAmount: 2
-    },
-    xaxis: {
-      type: 'datetime'
-    },
-  },
-
- 
-  
-
-
-};
 
 let  Apex = {
   chart: {
@@ -678,19 +596,6 @@ let  Apex = {
   },
 }
 
-function generateDayWiseTimeSeries(baseval, count, yrange) {
-  var i = 0;
-  var series = [];
-  while (i < count) {
-    var x = baseval;
-    var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-    series.push([x, y]);
-    baseval += 86400000;
-    i++;
-  }
-  return series;
-}
 //if( isStockList) return 'Loading..';
   return (
     <>
@@ -732,7 +637,9 @@ function generateDayWiseTimeSeries(baseval, count, yrange) {
     type="line"
 
   />
-
+<div id="chart1">
+  <ReactApexChart options={stocchart.options} series={stocchart.series} type="line" height={200} />
+</div>
   <br></br>
   <h3>Pick The Indicators:</h3>
 <Checkbox.Group
@@ -751,35 +658,18 @@ function generateDayWiseTimeSeries(baseval, count, yrange) {
       <Col span={8}>
         <Checkbox value="55">55 Day Moving Average</Checkbox>
       </Col>
-      <Col span={8}>
-        <Checkbox value="D">D</Checkbox>
-      </Col>
-      <Col span={8}>
-        <Checkbox value="E">E</Checkbox>
-      </Col>
+
     </Row>
   </Checkbox.Group>
 <div id="chart1">
  <ReactApexChart options={st.options} series={st.series} type="line" height={350} />
 </div>
 
-<div id="chart1">
-  <ReactApexChart options={stocchart.options} series={stocchart.series} type="line" height={350} />
-</div>
+
 
 <button onClick={fetchData}>Fetch Users</button>
-<div id="wrapper">
-    <div id="chart-line">
-      <ReactApexChart options={chartsync.options} series={chartsync.series} type="line" height={160} />
-    </div>
-    <div id="chart-line2">
-      <ReactApexChart options={chartsync.optionsLine2} series={chartsync.seriesLine2} type="line" height={160} />
-    </div>
-    <div id="chart-area">
-      <ReactApexChart options={chartsync.optionsArea} series={chartsync.seriesArea} type="area" height={160} />
-    </div>
-  </div>              
-                
+
+          
              
   </>
   )
