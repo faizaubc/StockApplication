@@ -127,20 +127,27 @@ var optionsBar = {
   <div><h3>${min}</h3></div>
 </Col>
 </Row>
+<Row >
+  <Col flex="1000px">
     <Chart
     options={state.options}
     series={state.series}
     type="candlestick"
-    width="1000"
+   
   />
+  </Col>
+  </Row>
+  <Row >
+    <Col flex="1000px">
      <Chart
     options={optionsBar.options}
-    series={optionsBar.series}
-    width="1000"
+    series={optionsBar.series}   
     type="bar"
     height ="200"
 
   />
+  </Col>
+  </Row>
   </>
   )
 }
