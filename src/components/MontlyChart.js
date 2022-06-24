@@ -115,20 +115,28 @@ var state ={
   <div><h3>${min}</h3></div>
 </Col>
  </Row>
+
+ <Row  >
+    <Col flex="1000px">
     <Chart
     options={state.options}
     series={state.series}
     type="candlestick"
-    width="1000"
+   
   />
+  </Col>
+  </Row>
+  <Row >
+    <Col flex="1000px">
      <Chart
     options={optionsBar.options}
-    series={optionsBar.series}
-    width="1000"
+    series={optionsBar.series} 
     height="200"
     type="bar"
 
   />
+  </Col>
+  </Row>
   </>
   )
 }

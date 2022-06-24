@@ -614,32 +614,49 @@ let  Apex = {
  </Row>
     <br></br>
     <br></br>
+  <Row >
+    <Col flex="1000px">
     <Chart
     options={state.options}
     series={state.series}
     type="candlestick"
-    width="1000"
+
     height="300"
   />
+  </Col>
+  </Row>
+  <Row>
+    <Col flex="1000px">
      <Chart
     options={optionsBar.options}
     series={optionsBar.series}
-    width="1000"
+  
     height="200"
     type="bar"
 
   />
+  </Col>
+  </Row>
+  <Row>
+<Col flex="1000px">
+  
   <Chart
     options={lineRSI.options}
     series={lineRSI.series}
-    width="1000"
+  
     height="200"
     type="line"
 
   />
-<div id="chart1">
-  <ReactApexChart options={stocchart.options} series={stocchart.series} type="line" height={200} />
-</div>
+  </Col>
+  </Row>
+  <Row>
+    <Col flex="1000px">
+
+  <ReactApexChart options={stocchart.options} series={stocchart.series} type="line" height={200}  />
+
+</Col>
+</Row>
   <br></br>
   <h3>Pick The Indicators:</h3>
 <Checkbox.Group
@@ -661,15 +678,20 @@ let  Apex = {
 
     </Row>
   </Checkbox.Group>
-<div id="chart1">
+  <Row>
+    <Col flex="1000px">
+
  <ReactApexChart options={st.options} series={st.series} type="line" height={350} />
-</div>
+
+</Col>
+</Row>
 
 
-
-<button onClick={fetchData}>Fetch Users</button>
-
-          
+<Row>
+  <Col span={8}>
+<button onClick={fetchData}>Fetch Stochastic Indicator</button>
+</Col>
+</Row>      
              
   </>
   )

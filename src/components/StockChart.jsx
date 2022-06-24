@@ -212,7 +212,7 @@ function StockChart() {
     <>
 <h2>{symbol} Stock Graph</h2>
 <Row>
-  <Col span={12}>
+  <Col xs ={24} sm={12} lg={8}>
 <h3>Input the stocks here:</h3>
     <AutoComplete
         dropdownMatchSelectWidth={252}
@@ -229,7 +229,7 @@ function StockChart() {
  
 
   </Col>
-  <Col>
+  <Col xs ={24} sm={12} lg={8}>
    <div id="weekly">
    <h3>Select Time Frame :</h3>
    <AutoComplete
@@ -249,7 +249,7 @@ function StockChart() {
   <Row>
   <br></br>
   <br></br>
-  <Col span={8} >
+  <Col xs ={24} sm={12} lg={8} >
   <h3>Select Period Type:</h3>
   <AutoComplete
         style={{
@@ -265,7 +265,7 @@ function StockChart() {
   </Col>
   <br></br>
   <br></br>
-  <Col span={8}>
+  <Col xs ={24} sm={12} lg={8}>
   <h3>Select Ticks Type:(Live Only)</h3>
 
   <AutoComplete
@@ -285,7 +285,7 @@ function StockChart() {
 </Col>
 <br></br>
 <br></br>
-<Col span={8}>
+<Col xs ={24} sm={12} lg={8}>
 <h3>Select Period Duration Type: (Live Only)</h3>
 
   <AutoComplete
