@@ -533,7 +533,7 @@ const onChange = (checkedValues) => {
 
 
 const fetchData = () => {
-  fetch(`https://www.alphavantage.co/query?function=STOCH&symbol=${symbol}&interval=daily&apikey=HLCNBX33PQ7B2OOL`)
+  fetch(`https://www.alphavantage.co/query?function=STOCH&symbol=${symbol}&interval=daily&apikey=${process.env.REACT_APP_ALPHA}`)
     .then(response => {
       return response.json()
     })

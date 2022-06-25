@@ -16,7 +16,7 @@ export const stock= createApi({
     baseQuery: fetchBaseQuery({baseUrl}),
     endpoints: (builder)=>({
         getStockList: builder.query({
-            query: (symbol) => createRequest(`/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=HLCNBX33PQ7B2OOL`)
+            query: (symbol) => createRequest(`/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${process.env.REACT_APP_ALPHA}`)
         }),
         
        
