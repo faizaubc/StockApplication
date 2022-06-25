@@ -28,7 +28,7 @@ export const stockApi= createApi({
             })
         }),
         getStockLiveData: builder.query({
-            query: ({liveInterval, symbol, range}) => createRequest(`/stock/v2/get-chart?interval=${liveInterval}&symbol=${symbol}&range=${range}&region=CA`),
+            query: ({liveInterval, symbol, range, country}) => createRequest(`/stock/v2/get-chart?interval=${liveInterval}&symbol=${symbol}&range=${range}&region=${country}`),
 
         }),
     

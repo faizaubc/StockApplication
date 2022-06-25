@@ -7,13 +7,19 @@ import {Row,Col} from  'antd';
 const StockDetails = ({symbolName, interval, liveInterval, range}) => {
   //const symbol = symbolName.split('.')[0] + ".TO";
   let symbol="";
+  let country ="CA";
       var splitSymbolOnDot= symbolName.split(".");
       if(splitSymbolOnDot[1]=="TRT")
         symbol= splitSymbolOnDot[0] +"." +"TO";
-      else
+      else{
         symbol= symbolName;
+        country="US";
+      }
+     
+         
   console.log("My Symbol is" ,symbol);
-  const {data,isStockList}=useGetStockLiveDataQuery ({liveInterval, symbol,range});
+
+  const {data,isStockList}=useGetStockLiveDataQuery ({liveInterval, symbol,range, country});
   const seriesData = [];
   const categoriesD=[];
   const timestamp=[];
