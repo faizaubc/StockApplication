@@ -122,6 +122,8 @@ const Homepage = () => {
         options={optionsSearch}
         onSelect={onSelect}
         placeholder="Enter the market.."
+        name ="auto"
+        id="auto"
         
   />
   
