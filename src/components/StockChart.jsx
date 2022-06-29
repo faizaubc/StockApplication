@@ -222,6 +222,7 @@ function StockChart() {
         options={options}
         onSelect={onSelect}
         onSearch={handleSearch}
+        id= "auto"
 
     >
     <Input.Search size="large" placeholder="Start Typing Stock..." enterButton />
@@ -240,6 +241,7 @@ function StockChart() {
         onSelect={onSelectForWeekly}
         placeholder="Weekly Interval"
         defaultValue="2020"
+        id= "week"
        
   />
 
@@ -259,6 +261,7 @@ function StockChart() {
         onSelect={onSelectForStockInterval}
         placeholder="Chart Interval Here"
         defaultValue="Daily"
+        id="time"
        
   />
 

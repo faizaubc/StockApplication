@@ -5,6 +5,7 @@ import {Navbar, Exchanges, Homepage, Stock, News, StockDetails, StockChart} from
 import './App.css';
 import StockSearch from './components/StockSearch';
 import StockD from './components/StockD';
+import LineChartD from './components/LineChartD';
 
 
 const App = () => {
@@ -37,6 +38,12 @@ const App = () => {
                 </Route>
                 <Route exact path ="/stockdetails/:stockid/:country">
                   <StockD/>
+                </Route>
+                <Route exact path ="/stockdetails/:stockid/:country">
+                  <StockD/>
+                </Route>
+                <Route exact path ="/stocklinechart/:stockid/:country">
+                  <LineChartD/>
                 </Route>
               </Switch>
 

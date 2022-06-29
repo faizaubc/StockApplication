@@ -91,6 +91,7 @@ const StockSearch = () => {
         onSelect={onSelect}
         onSearch={handleSearch}
         onChange={handleOnChange}
+        id="auto"
 
     >
     <Input.Search size="large" placeholder="Start Typing Stock..." enterButton />

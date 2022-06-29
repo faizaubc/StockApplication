@@ -1,4 +1,5 @@
-import React , {useState}from 'react';
+import React , {useState, useEffect}from 'react';
+import _ from "lodash";
 import millify from "millify";
 import {Typography, Row, Col , Statistic, Select, Space, Card,AutoComplete} from 'antd';
 import {Link} from 'react-router-dom';
@@ -10,15 +11,42 @@ const {Option}= Select;
 
 
 
+
 const Homepage = () => {
   const [perfID,setPerfID]=useState('0P00008IVF');
   const [country,setCountry]=useState('Canadian');
+  const [filter,setFilter]=useState('');
   let flag = true;
  
   const{data: stockNews}= useGetStockNewsQuery(perfID);
-  const topActives = stockNews?.Top10?.Actives?.Securities;
-  const topGainers = stockNews?.Top10?.Gainers?.Securities;
-  const topLosers = stockNews?.Top10?.Losers?.Securities;
+  let topActivesF = stockNews?.Top10?.Actives?.Securities;
+  let topGainersF = stockNews?.Top10?.Gainers?.Securities;
+  let topLosersF = stockNews?.Top10?.Losers?.Securities;
+
+
+    if(filter=='Percent Change'){
+      let topA = _.cloneDeep(topActivesF);
+      let topG=[...topGainersF];
+      let topL=[...topLosersF];
+    console.log("Before Actives",topA);
+      for (var i = 0; i < topA.length; i++){
+          for (var j = i; j < topA.length; j++){
+          if (topA[j]?.Quote?.PercentChange < topA[i]?.Quote?.PercentChange) {
+              //console.log(topActivesF[i]);
+               var x = topActivesF[j];
+               topA[j] =topA[i];
+               topA[i] = x;
+      }}
+    }
+
+    console.log("After Actives",topA);
+  }
+ 
+ 
+
+  let topActives = topActivesF;
+  let topGainers = topGainersF;
+  let topLosers =  topLosersF;
   console.log("News Data Array:",stockNews);
   console.log(topActives);
   console.log(topGainers);
@@ -51,6 +79,20 @@ const Homepage = () => {
     },
   ];
 
+  const options = [
+    {
+      value: ' ',
+    },
+    {
+      value: 'Percent Change',
+    },
+    {
+      value: 'Volume',
+    }
+  ];
+const onSelectFilter  = (value) => {
+  setFilter(value);
+}
 
 
 
@@ -113,7 +155,6 @@ const Homepage = () => {
     <Row>
       <Col><Title level={4}>Choose the type of Index :   </Title></Col><br></br>
       <Col span={30}>
-      
   <AutoComplete
         defaultValue='S&P/TSX Composite'
         style={{
@@ -126,11 +167,29 @@ const Homepage = () => {
         id="auto"
         
   />
-  
-  <br></br>     
+  </Col>
+  <br></br> 
+  <br></br> 
+  </Row>
+  <Row>
+
+  <Col><Title level={4}>Choose Filter:   </Title></Col><br></br>
+  <Col span={30}>
+  <AutoComplete
+        style={{
+        width: 200,
+        }}
+        options={options}
+        onSelect={onSelectFilter}
+        placeholder="Filter"
+        defaultValue=" "
+        id= "filer"
+       
+  />   
+   
    </Col>
- 
-    </Row>
+   </Row>
+    
 
 <br></br>
 <Title level={4}>Active Stocks in {country} Market:</Title>
@@ -138,7 +197,7 @@ const Homepage = () => {
 <Row gutter= {[24,24]}>
     {topActives?.map((record, i)=>(
         <Col xs ={24} sm={12} lg={8} key={i}>
-        <Link to= {`/stockdetails/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
+        <Link to= {`/stocklinechart/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
         <Card hoverable className="news-card">      
           <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
           <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
@@ -190,7 +249,7 @@ const Homepage = () => {
 <Row gutter= {[24,24]}>
     {topGainers?.map((record, i)=>(
         <Col xs ={24} sm={12} lg={8} key={i}>
-        <Link to= {`/stockdetails/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
+        <Link to= {`/stocklinechart/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
         <Card hoverable className="news-card"  onClick={()=> console.log(i)}>
           <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
           <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
@@ -241,7 +300,7 @@ const Homepage = () => {
 <Row gutter= {[24,24]}>
     {topLosers?.map((record, i)=>(
         <Col xs ={24} sm={12} lg={8} key={i}>
-      <Link to= {`/stockdetails/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
+      <Link to= {`/stocklinechart/${record?.Security?.RegionAndTicker?.split(":")[1]}/${country}`}>
         <Card hoverable className="news-card" onClick={()=> console.log(i)}>
           <Title className="news-title" level={5}>{record?.Security?.Name}</Title> 
           <Title className="news-title" level={5}>Exchange:   {record?.Security?.ExchangeShortName}&nbsp;&nbsp;</Title> 
