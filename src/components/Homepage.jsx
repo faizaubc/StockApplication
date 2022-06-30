@@ -22,31 +22,35 @@ const Homepage = () => {
   let topActivesF = stockNews?.Top10?.Actives?.Securities;
   let topGainersF = stockNews?.Top10?.Gainers?.Securities;
   let topLosersF = stockNews?.Top10?.Losers?.Securities;
-
-
-    if(filter=='Percent Change'){
-      let topA = _.cloneDeep(topActivesF);
-      let topG=[...topGainersF];
-      let topL=[...topLosersF];
-    console.log("Before Actives",topA);
-      for (var i = 0; i < topA.length; i++){
-          for (var j = i; j < topA.length; j++){
-          if (topA[j]?.Quote?.PercentChange < topA[i]?.Quote?.PercentChange) {
-              //console.log(topActivesF[i]);
-               var x = topActivesF[j];
-               topA[j] =topA[i];
-               topA[i] = x;
-      }}
-    }
-
-    console.log("After Actives",topA);
+  let topA = [...topActivesF];
+  let topG=[...topGainersF];
+  let topL=[...topLosersF];
+  if(filter=='Percent Change'){
+      topA.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
+      topG.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
+      topL.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);  
   }
+  else if(filter=='Volume'){
+    topA.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+    topG.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+    topL.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+  }else if(filter=='Price Change'){
+    topA.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+    topG.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+    topL.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+  }else if(filter=='52WeakH-L'){
+    topA.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh-a?.Quote?.FiftyTwoWeekLow) < (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+    topG.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+    topL.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+  }
+
+  console.log("After Filters",topA);
  
  
 
-  let topActives = topActivesF;
-  let topGainers = topGainersF;
-  let topLosers =  topLosersF;
+  let topActives = [...topA];
+  let topGainers = [...topG];
+  let topLosers =  [...topL];
   console.log("News Data Array:",stockNews);
   console.log(topActives);
   console.log(topGainers);
@@ -88,6 +92,12 @@ const Homepage = () => {
     },
     {
       value: 'Volume',
+    },
+    {
+      value: 'Price Change',
+    }
+    ,{
+      value: '52WeakH-L',
     }
   ];
 const onSelectFilter  = (value) => {
