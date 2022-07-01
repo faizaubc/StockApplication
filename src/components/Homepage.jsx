@@ -18,43 +18,51 @@ const Homepage = () => {
   const [filter,setFilter]=useState('');
   let flag = true;
  
-  const{data: stockNews}= useGetStockNewsQuery(perfID);
-  let topActivesF = stockNews?.Top10?.Actives?.Securities;
-  let topGainersF = stockNews?.Top10?.Gainers?.Securities;
-  let topLosersF = stockNews?.Top10?.Losers?.Securities;
-  let topA = [...topActivesF];
-  let topG=[...topGainersF];
-  let topL=[...topLosersF];
-  if(filter=='Percent Change'){
-      topA.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
-      topG.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
-      topL.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);  
-  }
-  else if(filter=='Volume'){
-    topA.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
-    topG.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
-    topL.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
-  }else if(filter=='Price Change'){
-    topA.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
-    topG.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
-    topL.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
-  }else if(filter=='52WeakH-L'){
-    topA.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh-a?.Quote?.FiftyTwoWeekLow) < (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
-    topG.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
-    topL.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
-  }
+  const{data, isstockNews}= useGetStockNewsQuery(perfID);
+  console.log(data);
+  let topActives = data?.Top10?.Actives?.Securities;
+  let topGainers = data?.Top10?.Gainers?.Securities;
+  let topLosers = data?.Top10?.Losers?.Securities;
 
-  console.log("After Filters",topA);
+
+    if(data!== undefined){
+
+    
+    let topA = [...topActives];
+    let topG=[...topGainers];
+    let topL=[...topLosers];
+    if(filter=='Percent Change'){
+        topA?.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
+        topG?.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);
+        topL?.sort((a, b) => (a?.Quote?.PercentChange < b?.Quote?.PercentChange) ? 1 : -1);  
+    }
+    else if(filter=='Volume'){
+      topA?.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+      topG?.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+      topL?.sort((a, b) => (a?.Quote?.Volume < b?.Quote?.Volume) ? 1 : -1);
+    }else if(filter=='Price Change'){
+      topA?.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+      topG?.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+      topL?.sort((a, b) => (a?.Quote?.PriceChange < b?.Quote?.PriceChange) ? 1 : -1);
+    }else if(filter=='52WeakH-L'){
+      topA?.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh-a?.Quote?.FiftyTwoWeekLow) < (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+      topG?.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+      topL?.sort((a, b) => ((a?.Quote?.FiftyTwoWeekHigh -a?.Quote?.FiftyTwoWeekLow)< (b?.Quote?.FiftyTwoWeekHigh-b?.Quote?.FiftyTwoWeekLow)) ? 1 : -1);
+    }
+  
+    console.log("After Filters",topA);
+   
+     topActives = [...topA];
+     topGainers = [...topG];
+     topLosers =  [...topL];
+    }
+  
  
  
-
-  let topActives = [...topA];
-  let topGainers = [...topG];
-  let topLosers =  [...topL];
-  console.log("News Data Array:",stockNews);
-  console.log(topActives);
-  console.log(topGainers);
-  console.log(topLosers);
+  //console.log("News Data Array:",stockNews);
+  //console.log(topActives);
+  //console.log(topGainers);
+  //console.log(topLosers);
 
   const optionsSearch = [
     {
@@ -102,6 +110,7 @@ const Homepage = () => {
   ];
 const onSelectFilter  = (value) => {
   setFilter(value);
+ 
 }
 
 
@@ -158,7 +167,7 @@ const onSelectFilter  = (value) => {
 
   };
  
-
+ if( isstockNews) return 'Loading The Data...';
   return (
     <>
     <Title level={3} className="heading">{country} Stock Gainers, Loosers, Actives</Title>
